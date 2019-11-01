@@ -7,6 +7,9 @@
 
 > I'm learning Spring to be able to create amazing APIs ;)
 
+## Where :question:
+
+I'm following [this course](https://www.udemy.com/course/restful-springboot-aws)
 
 ## Author
 
