@@ -18,6 +18,10 @@ I'm following [this course](https://www.udemy.com/course/restful-springboot-aws)
 * Twitter: [@kammradt](https://twitter.com/kammradt)
 * Github: [@kammradt](https://github.com/kammradt)
 
+## Notes :pencil:
+* [Relationships using annotations](https://github.com/kammradt/learning-spring/blob/master/NOTES.md#relationships-using-annotations)
+
+
 ## Show your support
 
 Give a ⭐️ if this project helped you!
