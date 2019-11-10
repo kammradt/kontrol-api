@@ -1,7 +1,9 @@
 package com.kammradt.learning.resource;
 
 import com.kammradt.learning.domain.Request;
+import com.kammradt.learning.domain.RequestStage;
 import com.kammradt.learning.service.RequestService;
+import com.kammradt.learning.service.RequestStageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +17,9 @@ public class RequestResource {
 
     @Autowired
     private RequestService requestService;
+
+    @Autowired
+    private RequestStageService requestStageService;
 
     @PostMapping
     public ResponseEntity<Request> save(@RequestBody Request request) {
@@ -45,7 +50,15 @@ public class RequestResource {
                 .body(requestService.findAll());
     }
 
-
     // findAllByUserId will be in userResource
+
+    @GetMapping("/{id}/request-stages")
+    public ResponseEntity<List<RequestStage>> findAllRequestStagesByRequestId(@PathVariable Long id) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(requestStageService.findAllByRequestId(id));
+    }
+
+
 
 }
