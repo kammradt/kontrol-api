@@ -15,7 +15,7 @@ I'm following [this course](https://www.udemy.com/course/restful-springboot-aws)
 
 👤 **Vinicius Kammradt**
 
-* Twitter: [@kammradt](https://twitter.com/kammradt)
+* Twitter: [@kammradt](https://twitter.com/kammzinho)
 * Github: [@kammradt](https://github.com/kammradt)
 
 ## Notes :pencil:
