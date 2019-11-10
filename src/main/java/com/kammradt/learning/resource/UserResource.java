@@ -5,7 +5,6 @@ import com.kammradt.learning.domain.User;
 import com.kammradt.learning.dto.UserLoginDTO;
 import com.kammradt.learning.service.RequestService;
 import com.kammradt.learning.service.UserService;
-import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -62,7 +61,7 @@ public class UserResource {
     }
 
     @GetMapping("/{id}/requests")
-    public ResponseEntity<List<Request>> findAllByUserId(@PathVariable Long id) {
+    public ResponseEntity<List<Request>> findAllRequestsByUserId(@PathVariable Long id) {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(requestService.findAllByUserId(id));
