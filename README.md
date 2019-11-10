@@ -16,7 +16,7 @@ I'm following [this course](https://www.udemy.com/course/restful-springboot-aws)
 👤 **Vinicius Kammradt**
 
 * Twitter: [@kammradt](https://twitter.com/kammradt)
-* Github: [@kammradt](https://github.com/kammradt)
+* Github: [@kammradt](https://github.com/kammzinho)
 
 ## Notes :pencil:
 * [Relationships using annotations](https://github.com/kammradt/learning-spring/blob/master/NOTES.md#relationships-using-annotations)
