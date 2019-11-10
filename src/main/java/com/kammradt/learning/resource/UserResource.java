@@ -1,7 +1,9 @@
 package com.kammradt.learning.resource;
 
+import com.kammradt.learning.domain.Request;
 import com.kammradt.learning.domain.User;
 import com.kammradt.learning.dto.UserLoginDTO;
+import com.kammradt.learning.service.RequestService;
 import com.kammradt.learning.service.UserService;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,9 @@ public class UserResource {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private RequestService requestService;
 
     @PostMapping
     public ResponseEntity<User> save(@RequestBody User user) {
@@ -55,6 +60,15 @@ public class UserResource {
                 .status(HttpStatus.OK)
                 .body(userService.login(user.getEmail(), user.getPassword()));
     }
+
+    @GetMapping("/{id}/requests")
+    public ResponseEntity<List<Request>> findAllByUserId(@PathVariable Long id) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(requestService.findAllByUserId(id));
+    }
+
+
 
 
 }
