@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(name = "requests")
+@RequestMapping(value = "requests")
 public class RequestResource {
 
     @Autowired
