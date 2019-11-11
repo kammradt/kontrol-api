@@ -1,6 +1,7 @@
 package com.kammradt.learning.service;
 
 import com.kammradt.learning.domain.User;
+import com.kammradt.learning.exception.NotFoundException;
 import com.kammradt.learning.repository.UserRepository;
 import com.kammradt.learning.service.util.HashUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +34,7 @@ public class UserService {
 
     public User findById(Long id) {
         Optional<User> result = userRepository.findById(id);
-        return result.orElse(null);
+        return result.orElseThrow(() -> new NotFoundException("There are no User with this ID"));
     }
 
     public List<User> findAll() {

@@ -2,6 +2,7 @@ package com.kammradt.learning.service;
 
 import com.kammradt.learning.domain.Request;
 import com.kammradt.learning.domain.enums.RequestState;
+import com.kammradt.learning.exception.NotFoundException;
 import com.kammradt.learning.repository.RequestRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,7 +28,8 @@ public class RequestService {
     }
 
     public Request findById(Long id) {
-        return requestRepository.findById(id).orElse(null);
+        return requestRepository.findById(id).orElseThrow(() -> new NotFoundException("There are no Request with this ID"));
+
     }
 
     public List<Request> findAll() {

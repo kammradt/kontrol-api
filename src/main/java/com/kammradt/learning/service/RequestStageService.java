@@ -1,6 +1,7 @@
 package com.kammradt.learning.service;
 
 import com.kammradt.learning.domain.RequestStage;
+import com.kammradt.learning.exception.NotFoundException;
 import com.kammradt.learning.repository.RequestRepository;
 import com.kammradt.learning.repository.RequestStageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +31,8 @@ public class RequestStageService {
     }
 
     public RequestStage findById(Long id) {
-        return requestStageRepository.findById(id).orElse(null);
+        return requestStageRepository.findById(id).orElseThrow(() -> new NotFoundException("There are no RequestStage with this ID"));
+
     }
 
     public List<RequestStage> findAllByRequestId(Long requestId) {
