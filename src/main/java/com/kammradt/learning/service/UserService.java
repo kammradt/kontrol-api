@@ -19,14 +19,14 @@ public class UserService {
 
     public User save(User user) {
         String hashedPassword = generateHash(user.getPassword());
-        user.setEmail(hashedPassword);
+        user.setPassword(hashedPassword);
 
         return userRepository.save(user);
     }
 
     public User update(User user) {
         String hashedPassword = generateHash(user.getPassword());
-        user.setEmail(hashedPassword);
+        user.setPassword(hashedPassword);
 
         return userRepository.save(user);
     }
