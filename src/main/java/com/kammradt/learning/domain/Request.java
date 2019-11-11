@@ -1,5 +1,7 @@
 package com.kammradt.learning.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.kammradt.learning.domain.enums.RequestState;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -34,6 +36,9 @@ public class Request implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date creationDate;
 
+
+    @Getter(onMethod = @__({@JsonIgnore}))
+    @Setter(onMethod = @__({@JsonProperty}))
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
