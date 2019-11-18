@@ -60,7 +60,7 @@ public class UserService {
     public User login(String email, String password) {
         password = generateHash(password);
         Optional<User> result = userRepository.login(email, password);
-        return result.orElse(null);
+        return result.orElseThrow(() -> new NotFoundException("No user found!"));
     }
 
 
