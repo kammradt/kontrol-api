@@ -3,9 +3,12 @@ package com.kammradt.learning.resource;
 import com.kammradt.learning.domain.Request;
 import com.kammradt.learning.domain.User;
 import com.kammradt.learning.dto.UserLoginDTO;
+import com.kammradt.learning.model.PageModel;
+import com.kammradt.learning.model.PageRequestModel;
 import com.kammradt.learning.service.RequestService;
 import com.kammradt.learning.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -47,10 +50,12 @@ public class UserResource {
     }
 
     @GetMapping
-    public ResponseEntity<List<User>> findAll() {
+    public ResponseEntity<PageModel<User>> findAll(@RequestParam int page, @RequestParam int size) {
+        PageRequestModel pageRequestModel = new PageRequestModel(page, size);
+        PageModel pageModel = userService.listAllOnLazyMode(pageRequestModel);
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(userService.findAll());
+                .body(pageModel);
     }
 
     @PostMapping("/login")
@@ -61,10 +66,12 @@ public class UserResource {
     }
 
     @GetMapping("/{id}/requests")
-    public ResponseEntity<List<Request>> findAllRequestsByUserId(@PathVariable Long id) {
+    public ResponseEntity<PageModel<Request>> findAllRequestsByUserId(@PathVariable Long id, @RequestParam int page, @RequestParam int size) {
+        PageRequestModel pageRequestModel = new PageRequestModel(page, size);
+        PageModel<Request> pageModel = requestService.findAllByUserIdOnLazyMode(id, pageRequestModel);
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(requestService.findAllByUserId(id));
+                .body(pageModel);
     }
 
 
