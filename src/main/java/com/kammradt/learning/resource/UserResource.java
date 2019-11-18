@@ -50,7 +50,9 @@ public class UserResource {
     }
 
     @GetMapping
-    public ResponseEntity<PageModel<User>> findAll(@RequestParam int page, @RequestParam int size) {
+    public ResponseEntity<PageModel<User>> findAll(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
         PageRequestModel pageRequestModel = new PageRequestModel(page, size);
         PageModel pageModel = userService.listAllOnLazyMode(pageRequestModel);
         return ResponseEntity
@@ -66,7 +68,10 @@ public class UserResource {
     }
 
     @GetMapping("/{id}/requests")
-    public ResponseEntity<PageModel<Request>> findAllRequestsByUserId(@PathVariable Long id, @RequestParam int page, @RequestParam int size) {
+    public ResponseEntity<PageModel<Request>> findAllRequestsByUserId(
+            @PathVariable Long id,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
         PageRequestModel pageRequestModel = new PageRequestModel(page, size);
         PageModel<Request> pageModel = requestService.findAllByUserIdOnLazyMode(id, pageRequestModel);
         return ResponseEntity
