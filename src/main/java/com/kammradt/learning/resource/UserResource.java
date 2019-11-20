@@ -3,6 +3,7 @@ package com.kammradt.learning.resource;
 import com.kammradt.learning.domain.Request;
 import com.kammradt.learning.domain.User;
 import com.kammradt.learning.dto.UserLoginDTO;
+import com.kammradt.learning.dto.UserUpdateRoleDTO;
 import com.kammradt.learning.model.PageModel;
 import com.kammradt.learning.model.PageRequestModel;
 import com.kammradt.learning.service.RequestService;
@@ -80,6 +81,14 @@ public class UserResource {
     }
 
 
+    @PatchMapping("/{id}/role")
+    public ResponseEntity<?> updateRole(@PathVariable Long id, @RequestBody UserUpdateRoleDTO userDTO) {
+        User user = userService.findById(id);
+        user.setRole(userDTO.getRole());
+        userService.updateRole(user);
+
+        return ResponseEntity.ok().build();
+    }
 
 
 }

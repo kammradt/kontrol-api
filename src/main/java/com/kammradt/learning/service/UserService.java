@@ -1,6 +1,7 @@
 package com.kammradt.learning.service;
 
 import com.kammradt.learning.domain.User;
+import com.kammradt.learning.domain.enums.Role;
 import com.kammradt.learning.exception.NotFoundException;
 import com.kammradt.learning.model.PageModel;
 import com.kammradt.learning.model.PageRequestModel;
@@ -61,6 +62,10 @@ public class UserService {
         password = generateHash(password);
         Optional<User> result = userRepository.login(email, password);
         return result.orElseThrow(() -> new NotFoundException("No user found!"));
+    }
+
+    public int updateRole(User user) {
+            return userRepository.updateRole(user.getId(), user.getRole());
     }
 
 
