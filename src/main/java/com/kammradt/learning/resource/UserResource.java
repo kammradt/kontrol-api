@@ -83,7 +83,7 @@ public class UserResource {
 
 
     @PatchMapping("/{id}/role")
-    public ResponseEntity<?> updateRole(@PathVariable Long id, @RequestBody UserUpdateRoleDTO userDTO) {
+    public ResponseEntity<?> updateRole(@PathVariable Long id, @RequestBody @Valid UserUpdateRoleDTO userDTO) {
         User user = userService.findById(id);
         user.setRole(userDTO.getRole());
         userService.updateRole(user);
