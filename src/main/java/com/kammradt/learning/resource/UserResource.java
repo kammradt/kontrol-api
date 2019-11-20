@@ -3,6 +3,8 @@ package com.kammradt.learning.resource;
 import com.kammradt.learning.domain.Request;
 import com.kammradt.learning.domain.User;
 import com.kammradt.learning.dto.UserLoginDTO;
+import com.kammradt.learning.dto.UserSaveDTO;
+import com.kammradt.learning.dto.UserUpdateDTO;
 import com.kammradt.learning.dto.UserUpdateRoleDTO;
 import com.kammradt.learning.model.PageModel;
 import com.kammradt.learning.model.PageRequestModel;
@@ -28,14 +30,15 @@ public class UserResource {
     private RequestService requestService;
 
     @PostMapping
-    public ResponseEntity<User> save(@RequestBody User user) {
+    public ResponseEntity<User> save(@RequestBody @Valid UserSaveDTO userDTO) {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(userService.save(user));
+                .body(userService.save(userDTO.toUser()));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<User> update(@PathVariable Long id, @RequestBody User user) {
+    public ResponseEntity<User> update(@PathVariable Long id, @RequestBody @Valid UserUpdateDTO userDTO) {
+        User user = userDTO.toUser();
         user.setId(id);
         User updatedUser = userService.update(user);
 

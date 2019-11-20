@@ -38,7 +38,7 @@ public class User implements Serializable {
     private String password;
 
 
-    @Column(length = 20, nullable = false)
+    @Column(length = 20, nullable = false, updatable = false)
     @Enumerated(EnumType.STRING)
     private Role role;
 
@@ -46,7 +46,6 @@ public class User implements Serializable {
     private List<Request> requests = new ArrayList<>();
 
     @Getter(onMethod = @__({@JsonIgnore}))
-    @Setter(onMethod = @__({@JsonIgnore }))
     @OneToMany(mappedBy = "user")
     private List<RequestStage> stages = new ArrayList<>();
 
