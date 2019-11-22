@@ -2,6 +2,8 @@ package com.kammradt.learning.resource;
 
 import com.kammradt.learning.domain.Request;
 import com.kammradt.learning.domain.RequestStage;
+import com.kammradt.learning.dto.RequestSaveDTO;
+import com.kammradt.learning.dto.RequestUpdateDTO;
 import com.kammradt.learning.service.RequestService;
 import com.kammradt.learning.service.RequestStageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -22,18 +25,19 @@ public class RequestResource {
     private RequestStageService requestStageService;
 
     @PostMapping
-    public ResponseEntity<Request> save(@RequestBody Request request) {
+    public ResponseEntity<Request> save(@RequestBody @Valid RequestSaveDTO requestDTO) {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(requestService.save(request));
+                .body(requestService.save(requestDTO.toRequest()));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Request> update(@PathVariable Long id, @RequestBody Request request) {
+    public ResponseEntity<Request> update(@PathVariable Long id, @RequestBody @Valid RequestUpdateDTO requestDTO) {
+        Request request = requestDTO.toRequest();
         request.setId(id);
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(requestService.save(request));
+                .body(requestService.update(request));
     }
 
     @GetMapping("/{id}")
