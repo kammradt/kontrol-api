@@ -1,11 +1,14 @@
 package com.kammradt.learning.resource;
 
 import com.kammradt.learning.domain.RequestStage;
+import com.kammradt.learning.dto.RequestStageSaveDTO;
 import com.kammradt.learning.service.RequestStageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping(value = "request-stages")
@@ -15,10 +18,10 @@ public class RequestStageResource {
     RequestStageService requestStageService;
 
     @PostMapping
-    public ResponseEntity<RequestStage> save(@RequestBody RequestStage requestStage) {
+    public ResponseEntity<RequestStage> save(@RequestBody @Valid RequestStageSaveDTO requestStageDTO) {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(requestStageService.save(requestStage));
+                .body(requestStageService.save(requestStageDTO.toRequestStage()));
     }
 
     @GetMapping("/{id}")
