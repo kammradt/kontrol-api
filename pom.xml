@@ -10,13 +10,13 @@
 	</parent>
 	<groupId>com.kammradt</groupId>
 	<artifactId>learning</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.4-SNAPSHOT</version>
 	<packaging>war</packaging>
 	<name>learning</name>
 	<description>Learning Springboot</description>
 
 	<properties>
-		<java.version>11</java.version>
+		<java.version>8</java.version>
 		<skipTests>true</skipTests>
 	</properties>
 
@@ -84,8 +84,8 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<configuration>
-					<source>11</source>
-					<target>11</target>
+					<source>8</source>
+					<target>8</target>
 				</configuration>
 			</plugin>
 		</plugins>
