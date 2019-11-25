@@ -8,16 +8,24 @@ import com.kammradt.learning.dto.UserUpdateDTO;
 import com.kammradt.learning.dto.UserUpdateRoleDTO;
 import com.kammradt.learning.model.PageModel;
 import com.kammradt.learning.model.PageRequestModel;
+import com.kammradt.learning.security.JwtManager;
 import com.kammradt.learning.service.RequestService;
 import com.kammradt.learning.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(value = "users")
@@ -28,6 +36,12 @@ public class UserResource {
 
     @Autowired
     private RequestService requestService;
+
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
+    @Autowired
+    private JwtManager jwtManager;
 
     @PostMapping
     public ResponseEntity<User> save(@RequestBody @Valid UserSaveDTO userDTO) {
@@ -66,10 +80,27 @@ public class UserResource {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<User> login(@RequestBody @Valid UserLoginDTO user) {
+    public ResponseEntity<HashMap> login(@RequestBody @Valid UserLoginDTO user) {
+        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword());
+        Authentication auth = authenticationManager.authenticate(token);
+
+        SecurityContextHolder.getContext().setAuthentication(auth);
+
+        org.springframework.security.core.userdetails.User userSpring =
+                (org.springframework.security.core.userdetails.User) auth.getPrincipal();
+
+        String email = userSpring.getUsername();
+        List<String> roles = userSpring.getAuthorities().stream()
+                                .map(GrantedAuthority::getAuthority)
+                                .collect(Collectors.toList());
+
+        String jwt = jwtManager.createToken(email, roles);
+
+        HashMap<String, String> response = new HashMap<>();
+        response.put("token", jwt);
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(userService.login(user.getEmail(), user.getPassword()));
+                .body(response);
     }
 
     @GetMapping("/{id}/requests")
