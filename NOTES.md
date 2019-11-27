@@ -62,7 +62,7 @@ This topic was a little bit confuse for me when I was creating the Bean Validati
 ```java
 public class User {
 
-	@NotNull(message = "Name is required")
+    @NotNull(message = "Name is required")
     @NotBlank(message = "Insert a valid name")
     // Which one is the better to use in this case?
     private String name;
