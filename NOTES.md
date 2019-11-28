@@ -51,3 +51,33 @@ When talking about REST APIs, it is a good ideia to keep up with correct status 
 |  401 	| UNAUTHORIZED, give a me correct token 	|
 |  403 	| FORBIDDEN, you should not ask again   	|
 |  404 	| NOT FOUND, try another resource       	|
+
+---
+
+## Differences between @NotNull and @NotBlank
+This topic was a little bit confuse for me when I was creating the Bean Validations for a DTO class, so now that I undestood how it works, I will write here too 😀
+
+> Lets imagine the class **UserDTO** that have `name` property   
+
+```java
+public class User {
+
+    @NotNull(message = "Name is required")
+    @NotBlank(message = "Insert a valid name")
+    // Which one is the better to use in this case?
+    private String name;
+
+}
+```
+
+### How it will work? 
+**@NotNull**
+Will give an error message if the given value for `name` is `null`.   
+**BUT** it will allow the an input like `""`,  because this is not null and it do not care about empty strings. 
+
+   
+**@NotBlank**  
+Will give an error message if the given value is `null` or the length is equals to zero, such as `"" or " ".trim()`   
+This is a more complete validation that covers the case of `""` or `"  "`, so it is a good practice use this in **mandatory/important** fields.
+
+For me, makes sense using *@NotBlank* most of the time.

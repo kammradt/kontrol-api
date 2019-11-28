@@ -21,6 +21,8 @@ I'm following [this course](https://www.udemy.com/course/restful-springboot-aws)
 ## Notes :pencil:
 * [Relationships using annotations](https://github.com/kammradt/learning-spring/blob/master/NOTES.md#relationships-using-annotations)
 * [HTTP Status Codes](https://github.com/kammradt/learning-spring/blob/master/NOTES.md#http-status-codes)
+* [@NotNull & NotBlank validation](https://github.com/kammradt/learning-spring/blob/master/NOTES.md#differences-between-notnull-and-notblank)
+
 
 ## Show your support
 
