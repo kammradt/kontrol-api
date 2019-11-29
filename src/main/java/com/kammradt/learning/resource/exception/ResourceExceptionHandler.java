@@ -4,6 +4,8 @@ import com.kammradt.learning.domain.exception.ErrorResponse;
 import com.kammradt.learning.domain.exception.ErrorResponseList;
 import com.kammradt.learning.exception.NotFoundException;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -43,6 +46,12 @@ public class ResourceExceptionHandler extends ResponseEntityExceptionHandler {
                 .body(new ErrorResponse(HttpStatus.FORBIDDEN.value(), e.getMessage(), new Date()));
     }
 
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<ErrorResponse> duplicateKeyException(DataIntegrityViolationException e) {
+        return ResponseEntity
+                .status(HttpStatus.CONFLICT)
+                .body(new ErrorResponse(HttpStatus.CONFLICT.value(), "Duplicated email. Try another one.", new Date()));
+    }
 
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
