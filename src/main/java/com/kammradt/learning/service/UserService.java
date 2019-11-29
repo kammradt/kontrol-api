@@ -49,6 +49,11 @@ public class UserService implements UserDetailsService {
         return result.orElseThrow(() -> new NotFoundException("There are no User with this ID"));
     }
 
+    public User findByEmail(String email) {
+        Optional<User> result = userRepository.findByEmail(email);
+        return result.orElseThrow(() -> new NotFoundException("There are no User with this Email"));
+    }
+
     public List<User> findAll() {
         return userRepository.findAll();
     }
