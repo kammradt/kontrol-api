@@ -26,14 +26,9 @@ import java.util.HashMap;
 @RequestMapping(value = "users")
 public class UserResource {
 
-    @Autowired
-    private UserService userService;
-
-    @Autowired
-    private RequestService requestService;
-
-    @Autowired
-    private SecurityService securityService;
+    @Autowired private UserService userService;
+    @Autowired private RequestService requestService;
+    @Autowired private SecurityService securityService;
 
     // Any
     @PostMapping

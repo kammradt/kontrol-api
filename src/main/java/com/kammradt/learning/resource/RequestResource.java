@@ -21,11 +21,8 @@ import java.util.List;
 @RequestMapping(value = "requests")
 public class RequestResource {
 
-    @Autowired
-    private RequestService requestService;
-
-    @Autowired
-    private RequestStageService requestStageService;
+    @Autowired private RequestService requestService;
+    @Autowired private RequestStageService requestStageService;
 
     @Secured("ROLE_REGULAR")
     @PreAuthorize("@resourceAccessManager.isOwnUser(#requestDTO.user.id)")
@@ -36,6 +33,7 @@ public class RequestResource {
                 .body(requestService.save(requestDTO.toRequest()));
     }
 
+    @Secured("ROLE_REGULAR")
     @PreAuthorize("@resourceAccessManager.isRequestOwner(#id)")
     @PutMapping("/{id}")
     public ResponseEntity<Request> update(@PathVariable Long id, @RequestBody @Valid RequestUpdateDTO requestDTO) {
@@ -46,6 +44,7 @@ public class RequestResource {
                 .body(requestService.update(request));
     }
 
+    @Secured("ROLE_REGULAR")
     @PreAuthorize("@resourceAccessManager.isRequestOwner(#id)")
     @GetMapping("/{id}")
     public ResponseEntity<Request> findById(@PathVariable Long id) {
@@ -54,6 +53,7 @@ public class RequestResource {
                 .body(requestService.findById(id));
     }
 
+    @Secured("ROLE_REGULAR")
     @PreAuthorize("@resourceAccessManager.isRequestOwner(#id)")
     @GetMapping
     public ResponseEntity<List<Request>> findAll() {
@@ -64,6 +64,7 @@ public class RequestResource {
 
     // findAllByUserId will be in userResource
 
+    @Secured("ROLE_REGULAR")
     @PreAuthorize("@resourceAccessManager.isRequestOwner(#id)")
     @GetMapping("/{id}/request-stages")
     public ResponseEntity<List<RequestStage>> findAllRequestStagesByRequestId(@PathVariable Long id) {

@@ -16,8 +16,7 @@ import javax.validation.Valid;
 @RequestMapping(value = "request-stages")
 public class RequestStageResource {
 
-    @Autowired
-    RequestStageService requestStageService;
+    @Autowired RequestStageService requestStageService;
 
     @PreAuthorize("@resourceAccessManager.isRequestOwner(#requestStageDTO.request.id) and @resourceAccessManager.isOwnUser(#requestStageDTO.user.id)")
     @Secured("ROLE_REGULAR")
