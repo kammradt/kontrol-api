@@ -26,14 +26,11 @@ public class UserSaveDTO {
     @Size(min = 7, max = 99, message = "Password must be between 8 and 99 characteres")
     private String password;
 
-    @NotNull(message = "Role is required")
-    private Role role;
-
     private List<Request> requests = new ArrayList<>();
     private List<RequestStage> stages = new ArrayList<>();
 
     public User toUser() {
-        return new User(null, this.name, this.email, this.password, this.role, this.requests, this.stages);
+        return new User(null, this.name, this.email, this.password, Role.REGULAR, this.requests, this.stages);
     }
 
 }
