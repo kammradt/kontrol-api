@@ -8,12 +8,15 @@ import com.kammradt.learning.dto.UserUpdateDTO;
 import com.kammradt.learning.dto.UserUpdateRoleDTO;
 import com.kammradt.learning.model.PageModel;
 import com.kammradt.learning.model.PageRequestModel;
+import com.kammradt.learning.security.ResourceAccessManager;
 import com.kammradt.learning.service.RequestService;
 import com.kammradt.learning.service.SecurityService;
 import com.kammradt.learning.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -32,6 +35,7 @@ public class UserResource {
     @Autowired
     private SecurityService securityService;
 
+    // Any
     @PostMapping
     public ResponseEntity<User> save(@RequestBody @Valid UserSaveDTO userDTO) {
         return ResponseEntity
@@ -39,6 +43,8 @@ public class UserResource {
                 .body(userService.save(userDTO.toUser()));
     }
 
+    @PreAuthorize("@resourceAccessManager.isOwnUser(#id)")
+    @Secured("ROLE_REGULAR")
     @PutMapping("/{id}")
     public ResponseEntity<User> update(@PathVariable Long id, @RequestBody @Valid UserUpdateDTO userDTO) {
         User user = userDTO.toUser();
@@ -50,6 +56,8 @@ public class UserResource {
                 .body(updatedUser);
     }
 
+    @PreAuthorize("@resourceAccessManager.isOwnUser(#id)")
+    @Secured("ROLE_REGULAR")
     @GetMapping("/{id}")
     public ResponseEntity<User> findById(@PathVariable Long id) {
         return ResponseEntity
@@ -57,6 +65,7 @@ public class UserResource {
                 .body(userService.findById(id));
     }
 
+    @Secured("ROLE_ADMIN")
     @GetMapping
     public ResponseEntity<PageModel<User>> findAll(
             @RequestParam(defaultValue = "0") int page,
@@ -68,6 +77,7 @@ public class UserResource {
                 .body(pageModel);
     }
 
+    // Any
     @PostMapping("/login")
     public ResponseEntity<HashMap> login(@RequestBody @Valid UserLoginDTO user) {
         String jwt = securityService.generateJWTToken(user);
@@ -79,6 +89,8 @@ public class UserResource {
                 .body(response);
     }
 
+    @PreAuthorize("@resourceAccessManager.isOwnUser(#id)")
+    @Secured("ROLE_REGULAR")
     @GetMapping("/{id}/requests")
     public ResponseEntity<PageModel<Request>> findAllRequestsByUserId(
             @PathVariable Long id,
@@ -92,6 +104,7 @@ public class UserResource {
     }
 
 
+    @Secured("ROLE_ADMIN")
     @PatchMapping("/{id}/role")
     public ResponseEntity<?> updateRole(@PathVariable Long id, @RequestBody @Valid UserUpdateRoleDTO userDTO) {
         User user = userService.findById(id);
