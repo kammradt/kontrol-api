@@ -43,6 +43,7 @@ public class User implements Serializable {
     private Role role;
 
     @OneToMany(mappedBy = "user")
+    @Getter(onMethod = @__({@JsonIgnore}))
     private List<Request> requests = new ArrayList<>();
 
     @Getter(onMethod = @__({@JsonIgnore}))

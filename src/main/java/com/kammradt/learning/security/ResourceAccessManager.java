@@ -43,7 +43,7 @@ public class ResourceAccessManager {
     }
 
 
-    private User getCurrentUser() {
+    public User getCurrentUser() {
         String email = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = userService.findByEmail(email);
 

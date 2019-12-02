@@ -29,6 +29,8 @@ public class UserResource {
     @Autowired private UserService userService;
     @Autowired private RequestService requestService;
     @Autowired private SecurityService securityService;
+    @Autowired private ResourceAccessManager resourceAccessManager;
+
 
     // Any
     @PostMapping
@@ -51,14 +53,21 @@ public class UserResource {
                 .body(updatedUser);
     }
 
-    @PreAuthorize("@resourceAccessManager.isOwnUser(#id)")
-    @Secured("ROLE_REGULAR")
+    @Secured("ROLE_ADMIN")
     @GetMapping("/{id}")
     public ResponseEntity<User> findById(@PathVariable Long id) {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(userService.findById(id));
     }
+
+    @GetMapping("/me")
+    public ResponseEntity<User> me() {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(resourceAccessManager.getCurrentUser());
+    }
+
 
     @Secured("ROLE_ADMIN")
     @GetMapping
