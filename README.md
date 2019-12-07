@@ -1,4 +1,4 @@
-<h1 align="center">Welcome to Learning Spring 👋</h1>
+<h1 align="center">Welcome to Kontrol 👋</h1>
 <p>
   <a href="https://twitter.com/kammradt" target="_blank">
     <img alt="Twitter: kammradt" src="https://img.shields.io/twitter/follow/kammradt.svg?style=social" />
