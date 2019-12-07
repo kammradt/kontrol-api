@@ -43,8 +43,12 @@ public class UserService implements UserDetailsService {
 
     public User updateProfile(UserUpdateProfileDTO userDTO) {
         User currentUser = resourceAccessManager.getCurrentUser();
-        currentUser.setEmail(userDTO.getEmail());
-        currentUser.setName(userDTO.getName());
+
+        if (userDTO.getName() != null && !userDTO.getName().isEmpty())
+            currentUser.setName(userDTO.getName());
+
+        if (userDTO.getEmail() != null && !userDTO.getEmail().isEmpty())
+            currentUser.setEmail(userDTO.getEmail());
 
         return userRepository.save(currentUser);
     }

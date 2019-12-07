@@ -40,9 +40,11 @@ public class UserResource {
     @PreAuthorize("@resourceAccessManager.isOwnUser(#id)")
     @Secured("ROLE_REGULAR")
     @PatchMapping("/{id}/profile")
-    public ResponseEntity<?> updateProfile(@PathVariable Long id, @RequestBody @Valid UserUpdateProfileDTO userDTO) {
-        userService.updateProfile(userDTO);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<User> updateProfile(@PathVariable Long id, @RequestBody @Valid UserUpdateProfileDTO userDTO) {
+        User updatedUser = userService.updateProfile(userDTO);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(updatedUser);
 
     }
 
