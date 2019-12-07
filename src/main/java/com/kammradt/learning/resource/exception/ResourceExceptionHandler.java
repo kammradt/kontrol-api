@@ -3,6 +3,7 @@ package com.kammradt.learning.resource.exception;
 import com.kammradt.learning.domain.exception.ErrorResponse;
 import com.kammradt.learning.domain.exception.ErrorResponseList;
 import com.kammradt.learning.exception.NotFoundException;
+import com.kammradt.learning.exception.WrongConfirmationPasswordException;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.DuplicateKeyException;
@@ -51,6 +52,13 @@ public class ResourceExceptionHandler extends ResponseEntityExceptionHandler {
         return ResponseEntity
                 .status(HttpStatus.CONFLICT)
                 .body(new ErrorResponse(HttpStatus.CONFLICT.value(), "Duplicated email. Try another one.", new Date()));
+    }
+
+    @ExceptionHandler(WrongConfirmationPasswordException.class)
+    public ResponseEntity<ErrorResponse> wrongPasswordConfirmationException(WrongConfirmationPasswordException e) {
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(new ErrorResponse(HttpStatus.BAD_REQUEST.value(), e.getMessage(), new Date()));
     }
 
     @Override

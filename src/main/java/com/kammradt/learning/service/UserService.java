@@ -2,10 +2,14 @@ package com.kammradt.learning.service;
 
 import com.kammradt.learning.domain.User;
 import com.kammradt.learning.domain.enums.Role;
+import com.kammradt.learning.dto.UserUpdatePasswordDTO;
+import com.kammradt.learning.dto.UserUpdateProfileDTO;
 import com.kammradt.learning.exception.NotFoundException;
+import com.kammradt.learning.exception.WrongConfirmationPasswordException;
 import com.kammradt.learning.model.PageModel;
 import com.kammradt.learning.model.PageRequestModel;
 import com.kammradt.learning.repository.UserRepository;
+import com.kammradt.learning.security.ResourceAccessManager;
 import com.kammradt.learning.service.util.HashUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -27,8 +31,8 @@ import static com.kammradt.learning.service.util.HashUtil.generateHash;
 @Service
 public class UserService implements UserDetailsService {
 
-    @Autowired
-    private UserRepository userRepository;
+    @Autowired private UserRepository userRepository;
+    @Autowired private ResourceAccessManager resourceAccessManager;
 
     public User save(User user) {
         String hashedPassword = generateHash(user.getPassword());
@@ -37,12 +41,27 @@ public class UserService implements UserDetailsService {
         return userRepository.save(user);
     }
 
-    public User update(User user) {
-        String hashedPassword = generateHash(user.getPassword());
-        user.setPassword(hashedPassword);
+    public User updateProfile(UserUpdateProfileDTO userDTO) {
+        User currentUser = resourceAccessManager.getCurrentUser();
+        currentUser.setEmail(userDTO.getEmail());
+        currentUser.setName(userDTO.getName());
 
-        return userRepository.save(user);
+        return userRepository.save(currentUser);
     }
+
+    public User updatePassword(UserUpdatePasswordDTO userDTO) {
+        String hashedPassword = generateHash(userDTO.getPassword());
+        String hashedPasswordConfirmation = generateHash(userDTO.getConfirmationPassword());
+
+
+        if (!hashedPassword.equals(hashedPasswordConfirmation))
+            throw new WrongConfirmationPasswordException("Passwords do not match!");
+
+        User currentUser = resourceAccessManager.getCurrentUser();
+        currentUser.setPassword(hashedPassword);
+        return userRepository.save(currentUser);
+    }
+
 
     public User findById(Long id) {
         Optional<User> result = userRepository.findById(id);

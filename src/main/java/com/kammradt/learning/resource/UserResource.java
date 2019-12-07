@@ -2,10 +2,7 @@ package com.kammradt.learning.resource;
 
 import com.kammradt.learning.domain.Request;
 import com.kammradt.learning.domain.User;
-import com.kammradt.learning.dto.UserLoginDTO;
-import com.kammradt.learning.dto.UserSaveDTO;
-import com.kammradt.learning.dto.UserUpdateDTO;
-import com.kammradt.learning.dto.UserUpdateRoleDTO;
+import com.kammradt.learning.dto.*;
 import com.kammradt.learning.model.PageModel;
 import com.kammradt.learning.model.PageRequestModel;
 import com.kammradt.learning.security.ResourceAccessManager;
@@ -42,15 +39,19 @@ public class UserResource {
 
     @PreAuthorize("@resourceAccessManager.isOwnUser(#id)")
     @Secured("ROLE_REGULAR")
-    @PutMapping("/{id}")
-    public ResponseEntity<User> update(@PathVariable Long id, @RequestBody @Valid UserUpdateDTO userDTO) {
-        User user = userDTO.toUser();
-        user.setId(id);
-        User updatedUser = userService.update(user);
+    @PatchMapping("/{id}/profile")
+    public ResponseEntity<?> updateProfile(@PathVariable Long id, @RequestBody @Valid UserUpdateProfileDTO userDTO) {
+        userService.updateProfile(userDTO);
+        return ResponseEntity.ok().build();
 
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(updatedUser);
+    }
+
+    @PreAuthorize("@resourceAccessManager.isOwnUser(#id)")
+    @Secured("ROLE_REGULAR")
+    @PatchMapping("/{id}/password")
+    public ResponseEntity<?> updatePassword(@PathVariable Long id, @RequestBody @Valid UserUpdatePasswordDTO userDTO) {
+        userService.updatePassword(userDTO);
+        return ResponseEntity.ok().build();
     }
 
     @Secured("ROLE_ADMIN")
