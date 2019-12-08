@@ -2,6 +2,7 @@ package com.kammradt.learning.service;
 
 import com.kammradt.learning.domain.Request;
 import com.kammradt.learning.domain.enums.RequestState;
+import com.kammradt.learning.dto.RequestUpdateDTO;
 import com.kammradt.learning.exception.NotFoundException;
 import com.kammradt.learning.model.PageModel;
 import com.kammradt.learning.model.PageRequestModel;
@@ -28,8 +29,11 @@ public class RequestService {
         return requestRepository.save(request);
     }
 
-    public Request update(Request request) {
-        return requestRepository.save(request);
+    public Request update(Long id, RequestUpdateDTO requestDTO) {
+        Request request = findById(id);
+        Request newRequest = requestDTO.toRequest();
+        newRequest.setCreationDate(request.getCreationDate());
+        return requestRepository.save(newRequest);
     }
 
     public Request findById(Long id) {

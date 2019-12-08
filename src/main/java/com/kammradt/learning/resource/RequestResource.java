@@ -37,11 +37,9 @@ public class RequestResource {
     @PreAuthorize("@resourceAccessManager.isRequestOwner(#id)")
     @PutMapping("/{id}")
     public ResponseEntity<Request> update(@PathVariable Long id, @RequestBody @Valid RequestUpdateDTO requestDTO) {
-        Request request = requestDTO.toRequest();
-        request.setId(id);
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(requestService.update(request));
+                .body(requestService.update(id, requestDTO));
     }
 
     @Secured("ROLE_REGULAR")
