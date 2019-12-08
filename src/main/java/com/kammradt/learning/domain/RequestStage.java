@@ -24,7 +24,7 @@ public class RequestStage implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(columnDefinition = "text")
+    @Column(columnDefinition = "text", nullable = false)
     private String description;
 
     @Column(name = "realization_date", nullable = false, updatable = false)
