@@ -34,7 +34,7 @@ public class UserResource {
     public ResponseEntity<User> save(@RequestBody @Valid UserSaveDTO userDTO) {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(userService.save(userDTO.toUser()));
+                .body(userService.save(userDTO));
     }
 
     @PreAuthorize("@resourceAccessManager.isOwnUser(#id)")
@@ -114,9 +114,7 @@ public class UserResource {
     @Secured("ROLE_ADMIN")
     @PatchMapping("/{id}/role")
     public ResponseEntity<?> updateRole(@PathVariable Long id, @RequestBody @Valid UserUpdateRoleDTO userDTO) {
-        User user = userService.findById(id);
-        user.setRole(userDTO.getRole());
-        userService.updateRole(user);
+        userService.updateRole(id, userDTO);
 
         return ResponseEntity.ok().build();
     }
