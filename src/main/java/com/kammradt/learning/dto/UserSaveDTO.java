@@ -4,7 +4,9 @@ import com.kammradt.learning.domain.Request;
 import com.kammradt.learning.domain.RequestStage;
 import com.kammradt.learning.domain.User;
 import com.kammradt.learning.domain.enums.Role;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.validation.constraints.Email;
@@ -15,6 +17,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Getter @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class UserSaveDTO {
 
     @NotBlank(message = "Name is required")
