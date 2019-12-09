@@ -32,6 +32,7 @@ public class RequestService {
     public Request update(Long id, RequestUpdateDTO requestDTO) {
         Request request = findById(id);
         Request newRequest = requestDTO.toRequest();
+        newRequest.setId(request.getId());
         newRequest.setCreationDate(request.getCreationDate());
         return requestRepository.save(newRequest);
     }

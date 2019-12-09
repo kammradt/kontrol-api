@@ -53,7 +53,15 @@ public class RequestStageResource {
 
         Request toBeUpdated = toBeDeleted.getRequest();
         List<RequestStage> stages = requestStageService.findAllByRequestId(toBeUpdated.getId());
-        RequestState newState = stages.get(stages.size() -1).getState();
+
+
+        RequestState newState;
+        if (stages.size() == 0)
+            newState = RequestState.OPEN;
+        else if (stages.size() == 1)
+            newState = stages.get(0).getState();
+        else
+            newState = stages.get(stages.size() - 1).getState();
 
         Request updated = requestService.updateState(toBeUpdated.getId(), newState);
 
