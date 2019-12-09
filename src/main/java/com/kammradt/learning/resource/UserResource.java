@@ -84,6 +84,13 @@ public class UserResource {
                 .body(pageModel);
     }
 
+    @Secured("ROLE_ADMIN")
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteById(@PathVariable Long id) {
+        userService.deleteById(id);
+        return ResponseEntity.ok().build();
+    }
+
     // Any
     @PostMapping("/login")
     public ResponseEntity<HashMap> login(@RequestBody @Valid UserLoginDTO user) {

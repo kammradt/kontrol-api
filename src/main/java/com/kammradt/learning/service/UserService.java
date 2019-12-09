@@ -84,6 +84,10 @@ public class UserService implements UserDetailsService {
         return userRepository.findAll();
     }
 
+    public void deleteById(Long id) {
+        userRepository.deleteById(id);
+    }
+
     public PageModel<User> listAllOnLazyMode(PageRequestModel pageRequest) {
         Pageable pageable = PageRequest.of(pageRequest.getPageNumber(), pageRequest.getPageSize());
         Page<User> resultPage = userRepository.findAll(pageable);
