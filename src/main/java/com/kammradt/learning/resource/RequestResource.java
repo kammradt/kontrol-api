@@ -15,6 +15,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.xml.ws.Response;
 import java.util.List;
 
 @RestController
@@ -61,6 +62,14 @@ public class RequestResource {
     }
 
     // findAllByUserId will be in userResource
+
+    @Secured("ROLE_REGULAR")
+    @PreAuthorize("@resourceAccessManager.isRequestOwner(#id)")
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteById(@PathVariable long id) {
+        requestService.deleteById(id);
+        return ResponseEntity.ok().build();
+    }
 
     @Secured("ROLE_REGULAR")
     @PreAuthorize("@resourceAccessManager.isRequestOwner(#id)")

@@ -7,6 +7,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -48,5 +50,6 @@ public class Request implements Serializable {
     private RequestState state;
 
     @OneToMany(mappedBy = "request")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private List<RequestStage> stages = new ArrayList<>();
 }
