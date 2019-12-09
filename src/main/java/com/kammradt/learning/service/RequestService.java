@@ -53,6 +53,12 @@ public class RequestService {
         requestRepository.deleteById(id);
     }
 
+    public Request updateState(Long id, RequestState newState) {
+        Request request = findById(id);
+        request.setState(newState);
+        return requestRepository.save(request);
+    }
+
     public PageModel<Request> findAllByUserIdOnLazyMode(Long id, PageRequestModel pageRequestModel) {
         Pageable pageable = PageRequest.of(pageRequestModel.getPageNumber(), pageRequestModel.getPageSize());
         Page<Request> resultPage = requestRepository.findAllByUserId(id, pageable);

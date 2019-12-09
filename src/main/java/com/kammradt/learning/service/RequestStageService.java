@@ -40,6 +40,11 @@ public class RequestStageService {
     }
 
 
+    public void deleteById(Long id) {
+        requestStageRepository.deleteById(id);
+    }
+
+
 
 
 
