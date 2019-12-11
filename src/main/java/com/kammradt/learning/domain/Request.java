@@ -52,4 +52,8 @@ public class Request implements Serializable {
     @OneToMany(mappedBy = "request")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private List<RequestStage> stages = new ArrayList<>();
+
+    @OneToMany(mappedBy = "request")
+    private List<RequestFile> files = new ArrayList<>();
+
 }
