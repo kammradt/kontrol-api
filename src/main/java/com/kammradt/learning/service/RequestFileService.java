@@ -25,7 +25,6 @@ public class RequestFileService {
     @Autowired private RequestService requestService;
 
 
-    // Upload all to S3
     public List<RequestFile> uploadFile(Long requestId, List<MultipartFile> files) {
         List<RequestFile> requestFiles = s3Service
                 .uploadMultipleFiles(files)
