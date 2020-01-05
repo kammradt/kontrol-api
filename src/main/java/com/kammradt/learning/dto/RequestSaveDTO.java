@@ -1,6 +1,7 @@
 package com.kammradt.learning.dto;
 
 import com.kammradt.learning.domain.Request;
+import com.kammradt.learning.domain.RequestFile;
 import com.kammradt.learning.domain.RequestStage;
 import com.kammradt.learning.domain.User;
 import lombok.AllArgsConstructor;
@@ -26,9 +27,10 @@ public class RequestSaveDTO {
     private User user;
 
     private List<RequestStage> stages = new ArrayList<>();
+    private List<RequestFile> files = new ArrayList<>();
 
     public Request toRequest() {
-        return new Request(null, this.subject, this.description, null, this.user, null, this.stages);
+        return new Request(null, this.subject, this.description, null, this.user, null, this.stages, this.files);
     }
 
 }
