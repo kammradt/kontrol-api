@@ -1,10 +1,14 @@
 package com.kammradt.learning.resource;
 
 import com.kammradt.learning.domain.Request;
+import com.kammradt.learning.domain.RequestFile;
 import com.kammradt.learning.domain.RequestStage;
 import com.kammradt.learning.dto.RequestSaveDTO;
 import com.kammradt.learning.dto.RequestUpdateDTO;
+import com.kammradt.learning.model.PageModel;
+import com.kammradt.learning.model.PageRequestModel;
 import com.kammradt.learning.security.ResourceAccessManager;
+import com.kammradt.learning.service.RequestFileService;
 import com.kammradt.learning.service.RequestService;
 import com.kammradt.learning.service.RequestStageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -23,6 +28,7 @@ public class RequestResource {
 
     @Autowired private RequestService requestService;
     @Autowired private RequestStageService requestStageService;
+    @Autowired private RequestFileService requestFileService;
 
     @Secured("ROLE_REGULAR")
     @PreAuthorize("@resourceAccessManager.isOwnUser(#requestDTO.user.id)")
@@ -79,6 +85,29 @@ public class RequestResource {
                 .body(requestStageService.findAllByRequestId(id));
     }
 
+    @Secured("ROLE_REGULAR")
+    @PreAuthorize("@resourceAccessManager.isRequestOwner(#id)")
+    @GetMapping("/{id}/files")
+    public ResponseEntity<PageModel<RequestFile>> findAllFilesByRequestId(
+            @PathVariable Long id,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        PageRequestModel pageable = new PageRequestModel(page, size);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(requestFileService.findAllByRequestId(id, pageable));
+    }
 
-
+    @Secured("ROLE_REGULAR")
+    @PreAuthorize("@resourceAccessManager.isRequestOwner(#id)")
+    @PostMapping("/{id}/files")
+    public ResponseEntity<List<RequestFile>> uploadFilesToRequest(
+            @PathVariable Long id,
+            @RequestBody List<MultipartFile> files
+    ) {
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(requestFileService.uploadFiles(id, files));
+    }
 }
