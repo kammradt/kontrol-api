@@ -25,7 +25,7 @@ public class RequestFileService {
     @Autowired private RequestService requestService;
 
 
-    public List<RequestFile> uploadFile(Long requestId, List<MultipartFile> files) {
+    public List<RequestFile> uploadFiles(Long requestId, List<MultipartFile> files) {
         List<RequestFile> requestFiles = s3Service
                 .uploadMultipleFiles(files)
                 .stream().map(uploadedFile -> {
