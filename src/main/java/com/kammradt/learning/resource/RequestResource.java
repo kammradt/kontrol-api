@@ -6,8 +6,7 @@ import com.kammradt.learning.domain.RequestStage;
 import com.kammradt.learning.dto.RequestSaveDTO;
 import com.kammradt.learning.dto.RequestUpdateDTO;
 import com.kammradt.learning.model.PageModel;
-import com.kammradt.learning.model.PageRequestModel;
-import com.kammradt.learning.security.ResourceAccessManager;
+import com.kammradt.learning.model.PageFilterDTO;
 import com.kammradt.learning.service.RequestFileService;
 import com.kammradt.learning.service.RequestService;
 import com.kammradt.learning.service.RequestStageService;
@@ -21,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping(value = "requests")
@@ -90,13 +90,12 @@ public class RequestResource {
     @GetMapping("/{id}/files")
     public ResponseEntity<PageModel<RequestFile>> findAllFilesByRequestId(
             @PathVariable Long id,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size
+            @RequestParam Map<String, String> params
     ) {
-        PageRequestModel pageable = new PageRequestModel(page, size);
+        PageFilterDTO pageFilterDTO = new PageFilterDTO(params);
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(requestFileService.findAllByRequestId(id, pageable));
+                .body(requestFileService.findAllByRequestId(id, pageFilterDTO));
     }
 
     @Secured("ROLE_REGULAR")

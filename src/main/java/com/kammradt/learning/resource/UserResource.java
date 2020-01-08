@@ -4,7 +4,7 @@ import com.kammradt.learning.domain.Request;
 import com.kammradt.learning.domain.User;
 import com.kammradt.learning.dto.*;
 import com.kammradt.learning.model.PageModel;
-import com.kammradt.learning.model.PageRequestModel;
+import com.kammradt.learning.model.PageFilterDTO;
 import com.kammradt.learning.security.ResourceAccessManager;
 import com.kammradt.learning.service.RequestService;
 import com.kammradt.learning.service.SecurityService;
@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping(value = "users")
@@ -74,11 +75,9 @@ public class UserResource {
 
     @Secured("ROLE_ADMIN")
     @GetMapping
-    public ResponseEntity<PageModel<User>> findAll(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) {
-        PageRequestModel pageRequestModel = new PageRequestModel(page, size);
-        PageModel pageModel = userService.listAllOnLazyMode(pageRequestModel);
+    public ResponseEntity<PageModel<User>> findAll(@RequestParam Map<String, String> params) {
+        PageFilterDTO pageFilterDTO = new PageFilterDTO(params);
+        PageModel pageModel = userService.listAllOnLazyMode(pageFilterDTO);
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(pageModel);
@@ -108,10 +107,10 @@ public class UserResource {
     @GetMapping("/{id}/requests")
     public ResponseEntity<PageModel<Request>> findAllRequestsByUserId(
             @PathVariable Long id,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) {
-        PageRequestModel pageRequestModel = new PageRequestModel(page, size);
-        PageModel<Request> pageModel = requestService.findAllByUserIdOnLazyMode(id, pageRequestModel);
+            @RequestParam Map<String, String> params
+    ) {
+        PageFilterDTO pageFilterDTO = new PageFilterDTO(params);
+        PageModel<Request> pageModel = requestService.findAllByUserIdOnLazyMode(id, pageFilterDTO);
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(pageModel);
