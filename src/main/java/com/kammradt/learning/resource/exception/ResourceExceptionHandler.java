@@ -4,9 +4,11 @@ import com.kammradt.learning.domain.exception.ErrorResponse;
 import com.kammradt.learning.domain.exception.ErrorResponseList;
 import com.kammradt.learning.exception.NotFoundException;
 import com.kammradt.learning.exception.WrongConfirmationPasswordException;
+import com.kammradt.learning.service.exception.ExceptionHandlerService;
+import org.apache.tomcat.util.http.fileupload.FileUploadBase;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,15 +18,17 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @ControllerAdvice
 public class ResourceExceptionHandler extends ResponseEntityExceptionHandler {
+
+    @Autowired ExceptionHandlerService exceptionHandlerService;
 
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<ErrorResponse> handleNotFoundException(NotFoundException e) {
@@ -59,6 +63,17 @@ public class ResourceExceptionHandler extends ResponseEntityExceptionHandler {
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
                 .body(new ErrorResponse(HttpStatus.BAD_REQUEST.value(), e.getMessage(), new Date()));
+    }
+
+    @ExceptionHandler(MaxUploadSizeExceededException.class)
+    public ResponseEntity<ErrorResponse> SizeFileSizeBiggerThanLimitException(MaxUploadSizeExceededException e) {
+        if (exceptionHandlerService.isFileSizeLimitException(e))
+            return exceptionHandlerService.handleFileSizeLimitException(e);
+
+        if (exceptionHandlerService.isBulkSizeLimitException(e))
+            return exceptionHandlerService.handleBulkSizeLimitException(e);
+
+        return exceptionHandlerService.defaultHandler(e);
     }
 
     @Override
