@@ -5,7 +5,7 @@ import com.kammradt.learning.domain.enums.RequestState;
 import com.kammradt.learning.dto.RequestUpdateDTO;
 import com.kammradt.learning.exception.NotFoundException;
 import com.kammradt.learning.model.PageModel;
-import com.kammradt.learning.model.PageRequestModel;
+import com.kammradt.learning.model.PageFilterDTO;
 import com.kammradt.learning.repository.RequestRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -60,8 +60,8 @@ public class RequestService {
         return requestRepository.save(request);
     }
 
-    public PageModel<Request> findAllByUserIdOnLazyMode(Long id, PageRequestModel pageRequestModel) {
-        Pageable pageable = PageRequest.of(pageRequestModel.getPageNumber(), pageRequestModel.getPageSize());
+    public PageModel<Request> findAllByUserIdOnLazyMode(Long id, PageFilterDTO pageFilterDTO) {
+        Pageable pageable = PageRequest.of(pageFilterDTO.getPage(), pageFilterDTO.getSize());
         Page<Request> resultPage = requestRepository.findAllByUserId(id, pageable);
 
         return new PageModel<>(

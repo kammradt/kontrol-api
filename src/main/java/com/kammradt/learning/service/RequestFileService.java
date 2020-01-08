@@ -3,7 +3,7 @@ package com.kammradt.learning.service;
 import com.kammradt.learning.domain.Request;
 import com.kammradt.learning.domain.RequestFile;
 import com.kammradt.learning.model.PageModel;
-import com.kammradt.learning.model.PageRequestModel;
+import com.kammradt.learning.model.PageFilterDTO;
 import com.kammradt.learning.model.UploadedFileModel;
 import com.kammradt.learning.repository.RequestFileRepository;
 import com.kammradt.learning.service.s3.S3Service;
@@ -47,8 +47,8 @@ public class RequestFileService {
         return requestFile;
     }
 
-    public PageModel<RequestFile> findAllByRequestId(Long requestId, PageRequestModel pageRequestModel) {
-        Pageable pageable = PageRequest.of(pageRequestModel.getPageNumber(), pageRequestModel.getPageSize());
+    public PageModel<RequestFile> findAllByRequestId(Long requestId, PageFilterDTO pageFilterDTO) {
+        Pageable pageable = PageRequest.of(pageFilterDTO.getPage(), pageFilterDTO.getSize());
         Page<RequestFile> page = requestFileRepository.findAllByRequestId(requestId, pageable);
 
         return new PageModel<>(

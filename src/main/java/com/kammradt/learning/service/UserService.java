@@ -1,7 +1,6 @@
 package com.kammradt.learning.service;
 
 import com.kammradt.learning.domain.User;
-import com.kammradt.learning.domain.enums.Role;
 import com.kammradt.learning.dto.UserSaveDTO;
 import com.kammradt.learning.dto.UserUpdatePasswordDTO;
 import com.kammradt.learning.dto.UserUpdateProfileDTO;
@@ -9,10 +8,9 @@ import com.kammradt.learning.dto.UserUpdateRoleDTO;
 import com.kammradt.learning.exception.NotFoundException;
 import com.kammradt.learning.exception.WrongConfirmationPasswordException;
 import com.kammradt.learning.model.PageModel;
-import com.kammradt.learning.model.PageRequestModel;
+import com.kammradt.learning.model.PageFilterDTO;
 import com.kammradt.learning.repository.UserRepository;
 import com.kammradt.learning.security.ResourceAccessManager;
-import com.kammradt.learning.service.util.HashUtil;
 import com.kammradt.learning.service.util.ValidationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -88,8 +86,8 @@ public class UserService implements UserDetailsService {
         userRepository.deleteById(id);
     }
 
-    public PageModel<User> listAllOnLazyMode(PageRequestModel pageRequest) {
-        Pageable pageable = PageRequest.of(pageRequest.getPageNumber(), pageRequest.getPageSize());
+    public PageModel<User> listAllOnLazyMode(PageFilterDTO pageRequest) {
+        Pageable pageable = PageRequest.of(pageRequest.getPage(), pageRequest.getSize());
         Page<User> resultPage = userRepository.findAll(pageable);
 
         return new PageModel<>(
