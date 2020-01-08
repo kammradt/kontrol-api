@@ -61,8 +61,7 @@ public class RequestService {
     }
 
     public PageModel<Request> findAllByUserIdOnLazyMode(Long id, PageFilterDTO pageFilterDTO) {
-        Pageable pageable = PageRequest.of(pageFilterDTO.getPage(), pageFilterDTO.getSize());
-        Page<Request> resultPage = requestRepository.findAllByUserId(id, pageable);
+        Page<Request> resultPage = requestRepository.findAllByUserId(id, pageFilterDTO.toPageable());
 
         return new PageModel<>(
                 (int) resultPage.getTotalElements(),

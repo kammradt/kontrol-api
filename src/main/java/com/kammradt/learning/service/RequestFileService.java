@@ -48,8 +48,7 @@ public class RequestFileService {
     }
 
     public PageModel<RequestFile> findAllByRequestId(Long requestId, PageFilterDTO pageFilterDTO) {
-        Pageable pageable = PageRequest.of(pageFilterDTO.getPage(), pageFilterDTO.getSize());
-        Page<RequestFile> page = requestFileRepository.findAllByRequestId(requestId, pageable);
+        Page<RequestFile> page = requestFileRepository.findAllByRequestId(requestId, pageFilterDTO.toPageable());
 
         return new PageModel<>(
                 (int) page.getTotalElements(),

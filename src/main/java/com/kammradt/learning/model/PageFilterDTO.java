@@ -2,6 +2,7 @@ package com.kammradt.learning.model;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.domain.PageRequest;
 
 import java.util.Map;
 
@@ -17,6 +18,10 @@ public class PageFilterDTO {
 
         if (params.containsKey("size"))
             this.size = Integer.parseInt(params.get("size"));
+    }
+
+    public PageRequest toPageable() {
+        return PageRequest.of(this.page, this.size);
     }
 
 }
