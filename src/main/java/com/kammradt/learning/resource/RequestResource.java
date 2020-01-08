@@ -57,8 +57,7 @@ public class RequestResource {
                 .body(requestService.findById(id));
     }
 
-    @Secured("ROLE_REGULAR")
-    @PreAuthorize("@resourceAccessManager.isRequestOwner(#id)")
+    @Secured("ROLE_ADMIN")
     @GetMapping
     public ResponseEntity<List<Request>> findAll() {
         return ResponseEntity
