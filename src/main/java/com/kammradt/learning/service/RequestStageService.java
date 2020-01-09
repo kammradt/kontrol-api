@@ -1,6 +1,8 @@
 package com.kammradt.learning.service;
 
+import com.kammradt.learning.domain.Request;
 import com.kammradt.learning.domain.RequestStage;
+import com.kammradt.learning.domain.enums.RequestState;
 import com.kammradt.learning.exception.NotFoundException;
 import com.kammradt.learning.repository.RequestRepository;
 import com.kammradt.learning.repository.RequestStageRepository;
@@ -13,11 +15,9 @@ import java.util.List;
 @Service
 public class RequestStageService {
 
-    @Autowired
-    private RequestStageRepository requestStageRepository;
-
-    @Autowired
-    private RequestRepository requestRepository;
+    @Autowired private RequestStageRepository requestStageRepository;
+    @Autowired private RequestRepository requestRepository;
+    @Autowired private RequestService requestService;
 
 
     public RequestStage save(RequestStage requestStage) {
@@ -41,11 +41,27 @@ public class RequestStageService {
 
 
     public void deleteById(Long id) {
+        Request toBeUpdated = findById(id).getRequest();
         requestStageRepository.deleteById(id);
+
+        RequestState newState = getNewStateAfterDeletion(toBeUpdated.getId());
+
+        requestService.updateState(toBeUpdated.getId(), newState);
     }
 
+    private RequestState getNewStateAfterDeletion(Long requestId) {
+        List<RequestStage> stages = findAllByRequestId(requestId);
 
+        RequestState newState;
+        if (stages.size() == 0)
+            newState = RequestState.OPEN;
+        else if (stages.size() == 1)
+            newState = stages.get(0).getState();
+        else
+            newState = stages.get(stages.size() - 1).getState();
 
+        return newState;
+    }
 
 
 }

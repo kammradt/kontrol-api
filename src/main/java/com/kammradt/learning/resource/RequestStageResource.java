@@ -48,25 +48,7 @@ public class RequestStageResource {
     @Secured("ROLE_REGULAR")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteById(@PathVariable Long id) {
-        RequestStage toBeDeleted = requestStageService.findById(id);
-        requestStageService.deleteById(toBeDeleted.getId());
-
-        Request toBeUpdated = toBeDeleted.getRequest();
-        List<RequestStage> stages = requestStageService.findAllByRequestId(toBeUpdated.getId());
-
-
-        RequestState newState;
-        if (stages.size() == 0)
-            newState = RequestState.OPEN;
-        else if (stages.size() == 1)
-            newState = stages.get(0).getState();
-        else
-            newState = stages.get(stages.size() - 1).getState();
-
-        Request updated = requestService.updateState(toBeUpdated.getId(), newState);
-
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(updated);
+        requestStageService.deleteById(id);
+        return ResponseEntity.ok().build();
     }
 }
