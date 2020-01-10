@@ -21,8 +21,13 @@ public class DataLoader implements ApplicationRunner {
     @Autowired private RequestStageService requestStageService;
 
     @Override
-    public void run(ApplicationArguments args) throws Exception {
+    public void run(ApplicationArguments args) {
 
+        if (databaseIsEmpty())
+            insertOneUserAndSomeRequests();
+    }
+
+    private void insertOneUserAndSomeRequests() {
         User vini = userService.save(new UserSaveDTO("Vinicius Kammradt", "vinicius.kammradt@email.com", "12345678"));
         Request macbook = requestService.save(new Request(null, "My Macbook PRO", "I'm buying a new Macbook and I'm really happy", null, vini, null, null, null));
         requestStageService.save(new RequestStage(null, "I'm getting the money to buy", null, vini, macbook, RequestState.OPEN));
@@ -36,9 +41,9 @@ public class DataLoader implements ApplicationRunner {
 
         Request car = requestService.save(new Request(null, "My first CAR!", "I want to buy a gol bolinha", null, vini, null, null, null));
         requestStageService.save(new RequestStage(null, "I'll sell picolés to get money", null, vini, car, RequestState.OPEN));
+    }
 
-        User alve = userService.save(new UserSaveDTO("Alves", "vinicius.alves@email.com", "12345678"));
-
-
+    private boolean databaseIsEmpty() {
+        return userService.count() == 0L;
     }
 }

@@ -108,6 +108,10 @@ public class UserService implements UserDetailsService {
         return userRepository.updateRole(user.getId(), user.getRole());
     }
 
+    public long count() {
+        return userRepository.count();
+    }
+
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
