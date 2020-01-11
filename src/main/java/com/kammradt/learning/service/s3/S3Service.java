@@ -36,7 +36,7 @@ public class S3Service {
 
     @SneakyThrows
     private UploadedFileModel uploadFileToS3(MultipartFile file) {
-        String originalNameFormatted = getFileFormattedOriginalName(file.getOriginalFilename());
+        String originalFilename = file.getOriginalFilename();
         String s3FileName = generateUniqueFileName(file.getOriginalFilename());
 
         ObjectMetadata metadata = setObjectmetadata(file);
@@ -47,15 +47,11 @@ public class S3Service {
         s3.putObject(request);
 
         String location = getFileLocacation(s3FileName);
-        return new UploadedFileModel(originalNameFormatted, location);
+        return new UploadedFileModel(originalFilename, location);
     }
 
     private String getFileLocacation(String filename) {
         return "https://" + this.bucketName + ".s3." + this.region + ".amazonaws.com/" + filename;
-    }
-    private String getFileFormattedOriginalName(String filename) {
-        String[] splittedName = filename.split("\\.(?=[^.]+$)");
-        return splittedName[0];
     }
 
     private ObjectMetadata setObjectmetadata(MultipartFile file) {
