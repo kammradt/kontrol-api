@@ -63,4 +63,8 @@ public class S3Service {
     private String generateUniqueFileName(String filename) {
         return UUID.randomUUID().toString() + "_" + filename;
     }
+
+    public void delete(String S3filename) {
+        this.s3.deleteObject(bucketName, S3filename);
+    }
 }
