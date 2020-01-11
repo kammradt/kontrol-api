@@ -54,6 +54,7 @@ public class Request implements Serializable {
     private List<RequestStage> stages = new ArrayList<>();
 
     @OneToMany(mappedBy = "request")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private List<RequestFile> files = new ArrayList<>();
 
 }
