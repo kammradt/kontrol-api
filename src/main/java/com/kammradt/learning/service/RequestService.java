@@ -39,7 +39,6 @@ public class RequestService {
 
     public Request findById(Long id) {
         return requestRepository.findById(id).orElseThrow(() -> new NotFoundException("There are no Request with this ID"));
-
     }
 
     public List<Request> findAll() {
