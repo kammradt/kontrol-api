@@ -24,6 +24,9 @@ public class RequestFile implements Serializable {
     @Column(nullable = false)
     private String name;
 
+    @Column(nullable = false)
+    private String S3Name;
+
     @Column(nullable = false, columnDefinition = "text")
     private String location;
 

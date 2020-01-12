@@ -4,13 +4,11 @@ import com.kammradt.learning.domain.Request;
 import com.kammradt.learning.domain.RequestFile;
 import com.kammradt.learning.model.PageModel;
 import com.kammradt.learning.model.PageFilterDTO;
-import com.kammradt.learning.model.UploadedFileModel;
+import com.kammradt.learning.model.RequestFileDTO;
 import com.kammradt.learning.repository.RequestFileRepository;
 import com.kammradt.learning.service.s3.S3Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -28,23 +26,14 @@ public class RequestFileService {
     public List<RequestFile> uploadFiles(Long requestId, List<MultipartFile> files) {
         List<RequestFile> requestFiles = s3Service
                 .uploadMultipleFiles(files)
-                .stream().map(uploadedFile -> {
-                    RequestFile requestFile = uploadedFileToRequestFile(uploadedFile);
-
+                .stream().map(uploadedFileDTO -> {
+                    RequestFile requestFile = uploadedFileDTO.toRequestFile();
                     Request request = requestService.findById(requestId);
                     requestFile.setRequest(request);
-
                     return requestFile;
                 })
                 .collect(Collectors.toList());
         return requestFileRepository.saveAll(requestFiles);
-    }
-
-    private RequestFile uploadedFileToRequestFile(UploadedFileModel uploadedFileModel) {
-        RequestFile requestFile = new RequestFile();
-        requestFile.setName(uploadedFileModel.getName());
-        requestFile.setLocation(uploadedFileModel.getLocation());
-        return requestFile;
     }
 
     public PageModel<RequestFile> findAllByRequestId(Long requestId, PageFilterDTO pageFilterDTO) {
