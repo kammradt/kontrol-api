@@ -1,6 +1,7 @@
 package com.kammradt.learning.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.kammradt.learning.listeners.RequestFileListener;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,6 +14,7 @@ import java.io.Serializable;
 @Getter @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@EntityListeners(RequestFileListener.class)
 public class RequestFile implements Serializable {
 
     private static final long serialVersionUID = 1L;

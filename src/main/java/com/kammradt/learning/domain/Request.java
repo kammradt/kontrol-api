@@ -3,12 +3,14 @@ package com.kammradt.learning.domain;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.kammradt.learning.domain.enums.RequestState;
+import com.kammradt.learning.service.RequestFileService;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -53,7 +55,7 @@ public class Request implements Serializable {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private List<RequestStage> stages = new ArrayList<>();
 
-    @OneToMany(mappedBy = "request")
+    @OneToMany(mappedBy = "request", cascade = CascadeType.ALL)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private List<RequestFile> files = new ArrayList<>();
 
