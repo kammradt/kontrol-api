@@ -2,6 +2,7 @@ package com.kammradt.learning.service;
 
 import com.kammradt.learning.domain.Request;
 import com.kammradt.learning.domain.RequestFile;
+import com.kammradt.learning.exception.NotFoundException;
 import com.kammradt.learning.model.PageModel;
 import com.kammradt.learning.model.PageFilterDTO;
 import com.kammradt.learning.model.RequestFileDTO;
@@ -44,6 +45,12 @@ public class RequestFileService {
                 page.getSize(),
                 page.getTotalPages(),
                 page.getContent());
+    }
+
+    public void deleteRequestFileById(Long id) {
+        RequestFile requestFile = requestFileRepository.findById(id).orElseThrow(() -> new NotFoundException("There are no RequestFile with this ID"));
+        requestFileRepository.deleteById(id);
+        s3Service.delete(requestFile.getS3Name());
     }
 
 
