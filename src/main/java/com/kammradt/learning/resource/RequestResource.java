@@ -98,6 +98,17 @@ public class RequestResource {
     }
 
     @Secured("ROLE_REGULAR")
+    @PreAuthorize("@resourceAccessManager.isRequestOwner(#requestId)")
+    @DeleteMapping("/{requestId}/files/{fileId}")
+    public ResponseEntity<?> deleteRequestFileById(
+            @PathVariable Long requestId,
+            @PathVariable Long fileId
+    ) {
+        requestFileService.deleteRequestFileById(fileId);
+        return ResponseEntity.ok().build();
+    }
+
+    @Secured("ROLE_REGULAR")
     @PreAuthorize("@resourceAccessManager.isRequestOwner(#id)")
     @PostMapping("/{id}/files")
     public ResponseEntity<List<RequestFile>> uploadFilesToRequest(
