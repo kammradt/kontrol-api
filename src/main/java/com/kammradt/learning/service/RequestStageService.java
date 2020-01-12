@@ -53,12 +53,15 @@ public class RequestStageService {
         List<RequestStage> stages = findAllByRequestId(requestId);
 
         RequestState newState;
-        if (stages.size() == 0)
+        if (stages.isEmpty())
             newState = RequestState.OPEN;
         else if (stages.size() == 1)
             newState = stages.get(0).getState();
         else
-            newState = stages.get(stages.size() - 1).getState();
+            if (stages.stream().anyMatch(stage -> stage.getState() == RequestState.CLOSED))
+                newState = RequestState.CLOSED;
+            else
+                newState = RequestState.IN_PROGRESS;
 
         return newState;
     }
