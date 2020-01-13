@@ -30,19 +30,18 @@ public class UserResource {
     @Autowired private ResourceAccessManager resourceAccessManager;
 
 
-    // Any
     @PostMapping
     public ResponseEntity<User> save(@RequestBody @Valid UserSaveDTO userDTO) {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(userService.save(userDTO));
+                .body(userService.save(userDTO.toUser()));
     }
 
     @PreAuthorize("@resourceAccessManager.isOwnUser(#id)")
     @Secured("ROLE_REGULAR")
     @PatchMapping("/{id}/profile")
     public ResponseEntity<User> updateProfile(@PathVariable Long id, @RequestBody @Valid UserUpdateProfileDTO userDTO) {
-        User updatedUser = userService.updateProfile(userDTO);
+        User updatedUser = userService.updateProfile(userDTO.toUser());
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(updatedUser);
@@ -72,7 +71,6 @@ public class UserResource {
                 .body(resourceAccessManager.getCurrentUser());
     }
 
-
     @Secured("ROLE_ADMIN")
     @GetMapping
     public ResponseEntity<PageModel<User>> findAll(@RequestParam Map<String, String> params) {
@@ -90,16 +88,11 @@ public class UserResource {
         return ResponseEntity.ok().build();
     }
 
-    // Any
     @PostMapping("/login")
-    public ResponseEntity<HashMap> login(@RequestBody @Valid UserLoginDTO user) {
-        String jwt = securityService.generateJWTToken(user);
-        HashMap<String, String> response = new HashMap<>();
-        response.put("token", jwt);
-        
+    public ResponseEntity<HashMap<String, String>> login(@RequestBody @Valid UserLoginDTO userDTO) {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(response);
+                .body(securityService.generateJWTToken(userDTO));
     }
 
     @PreAuthorize("@resourceAccessManager.isOwnUser(#id)")
@@ -116,12 +109,10 @@ public class UserResource {
                 .body(pageModel);
     }
 
-
     @Secured("ROLE_ADMIN")
     @PatchMapping("/{id}/role")
     public ResponseEntity<?> updateRole(@PathVariable Long id, @RequestBody @Valid UserUpdateRoleDTO userDTO) {
-        userService.updateRole(id, userDTO);
-
+        userService.updateRole(id, userDTO.toUser().getRole());
         return ResponseEntity.ok().build();
     }
 

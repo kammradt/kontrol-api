@@ -1,10 +1,8 @@
 package com.kammradt.learning.service;
 
 import com.kammradt.learning.domain.User;
-import com.kammradt.learning.dto.UserSaveDTO;
+import com.kammradt.learning.domain.enums.Role;
 import com.kammradt.learning.dto.UserUpdatePasswordDTO;
-import com.kammradt.learning.dto.UserUpdateProfileDTO;
-import com.kammradt.learning.dto.UserUpdateRoleDTO;
 import com.kammradt.learning.exception.NotFoundException;
 import com.kammradt.learning.exception.WrongConfirmationPasswordException;
 import com.kammradt.learning.model.PageModel;
@@ -14,8 +12,6 @@ import com.kammradt.learning.security.ResourceAccessManager;
 import com.kammradt.learning.service.util.ValidationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -36,22 +32,20 @@ public class UserService implements UserDetailsService {
     @Autowired private ResourceAccessManager resourceAccessManager;
     @Autowired private ValidationService validationService;
 
-    public User save(UserSaveDTO userDTO) {
-        User user = userDTO.toUser();
+    public User save(User user) {
         String hashedPassword = generateHash(user.getPassword());
         user.setPassword(hashedPassword);
-
         return userRepository.save(user);
     }
 
-    public User updateProfile(UserUpdateProfileDTO userDTO) {
+    public User updateProfile(User user) {
         User currentUser = resourceAccessManager.getCurrentUser();
 
-        if (validationService.isNotNullAndNotEmpty(userDTO.getName()))
-            currentUser.setName(userDTO.getName());
+        if (validationService.isNotNullAndNotEmpty(user.getName()))
+            currentUser.setName(user.getName());
 
-        if (validationService.isNotNullAndNotEmpty(userDTO.getEmail()))
-            currentUser.setEmail(userDTO.getEmail());
+        if (validationService.isNotNullAndNotEmpty(user.getEmail()))
+            currentUser.setEmail(user.getEmail());
 
         return userRepository.save(currentUser);
     }
@@ -102,10 +96,9 @@ public class UserService implements UserDetailsService {
         return result.orElseThrow(() -> new NotFoundException("No user found!"));
     }
 
-    public int updateRole(Long id, UserUpdateRoleDTO userDTO) {
-        User user = findById(id);
-        user.setRole(userDTO.getRole());
-        return userRepository.updateRole(user.getId(), user.getRole());
+    public int updateRole(Long userId, Role newRole) {
+        User userToBeUpdated = findById(userId);
+        return userRepository.updateRole(userToBeUpdated.getId(), newRole);
     }
 
     public long count() {

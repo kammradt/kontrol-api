@@ -45,7 +45,7 @@ public class RequestResource {
     public ResponseEntity<Request> update(@PathVariable Long id, @RequestBody @Valid RequestUpdateDTO requestDTO) {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(requestService.update(id, requestDTO));
+                .body(requestService.update(id, requestDTO.toRequest()));
     }
 
     @Secured("ROLE_REGULAR")

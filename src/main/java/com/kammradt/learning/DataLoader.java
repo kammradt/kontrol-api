@@ -4,6 +4,7 @@ import com.kammradt.learning.domain.Request;
 import com.kammradt.learning.domain.RequestStage;
 import com.kammradt.learning.domain.User;
 import com.kammradt.learning.domain.enums.RequestState;
+import com.kammradt.learning.domain.enums.Role;
 import com.kammradt.learning.dto.UserSaveDTO;
 import com.kammradt.learning.service.RequestService;
 import com.kammradt.learning.service.RequestStageService;
@@ -28,7 +29,7 @@ public class DataLoader implements ApplicationRunner {
     }
 
     private void insertOneUserAndSomeRequests() {
-        User vini = userService.save(new UserSaveDTO("Vinicius Kammradt", "vinicius.kammradt@email.com", "12345678"));
+        User vini = userService.save(new User(null, "Vinicius Kammradt", "vinicius.kammradt@email.com", "12345678", Role.REGULAR, null ,null));
         Request macbook = requestService.save(new Request(null, "My Macbook PRO", "I'm buying a new Macbook and I'm really happy", null, vini, null, null, null));
         requestStageService.save(new RequestStage(null, "I'm getting the money to buy", null, vini, macbook, RequestState.OPEN));
         requestStageService.save(new RequestStage(null, "I Bought and waiting", null, vini, macbook, RequestState.IN_PROGRESS));
