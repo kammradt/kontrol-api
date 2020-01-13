@@ -58,14 +58,4 @@ public class RequestService {
                       resultPage.getTotalPages(),
                       resultPage.getContent());
     }
-
-
-
-
-
-
-
-
-
-
 }
