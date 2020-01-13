@@ -51,7 +51,7 @@ public class Request implements Serializable {
     @Enumerated(EnumType.STRING)
     private RequestState state;
 
-    @OneToMany(mappedBy = "request")
+    @OneToMany(mappedBy = "request", cascade = CascadeType.ALL)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private List<RequestStage> stages = new ArrayList<>();
 

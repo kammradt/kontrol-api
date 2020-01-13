@@ -45,12 +45,12 @@ public class User implements Serializable {
     private Role role;
 
     @Getter(onMethod = @__({@JsonIgnore}))
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private List<Request> requests = new ArrayList<>();
 
     @Getter(onMethod = @__({@JsonIgnore}))
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private List<RequestStage> stages = new ArrayList<>();
 
