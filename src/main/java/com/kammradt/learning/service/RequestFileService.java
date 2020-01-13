@@ -25,6 +25,7 @@ public class RequestFileService {
 
 
     public List<RequestFile> uploadFiles(Long requestId, List<MultipartFile> files) {
+        requestService.verifyIfRequestCanBeUpdated(requestId);
         List<RequestFile> requestFiles = s3Service
                 .uploadMultipleFiles(files)
                 .stream().map(uploadedFileDTO -> {

@@ -21,10 +21,12 @@ public class RequestStageService {
 
 
     public RequestStage save(RequestStage requestStage) {
+        Long requestBeingUpdated = requestStage.getRequest().getId();
+        requestService.verifyIfRequestCanBeUpdated(requestBeingUpdated);
+
         requestStage.setRealizationDate(new Date());
         RequestStage savedRequestStage = requestStageRepository.save(requestStage);
 
-        Long requestBeingUpdated = requestStage.getRequest().getId();
         requestRepository.updateRequestState(requestBeingUpdated, requestStage.getState());
 
         return savedRequestStage;
