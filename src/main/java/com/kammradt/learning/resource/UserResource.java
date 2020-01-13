@@ -30,7 +30,6 @@ public class UserResource {
     @Autowired private ResourceAccessManager resourceAccessManager;
 
 
-    // Any
     @PostMapping
     public ResponseEntity<User> save(@RequestBody @Valid UserSaveDTO userDTO) {
         return ResponseEntity
@@ -72,7 +71,6 @@ public class UserResource {
                 .body(resourceAccessManager.getCurrentUser());
     }
 
-
     @Secured("ROLE_ADMIN")
     @GetMapping
     public ResponseEntity<PageModel<User>> findAll(@RequestParam Map<String, String> params) {
@@ -90,7 +88,6 @@ public class UserResource {
         return ResponseEntity.ok().build();
     }
 
-    // Any
     @PostMapping("/login")
     public ResponseEntity<HashMap> login(@RequestBody @Valid UserLoginDTO user) {
         String jwt = securityService.generateJWTToken(user);
@@ -115,7 +112,6 @@ public class UserResource {
                 .status(HttpStatus.OK)
                 .body(pageModel);
     }
-
 
     @Secured("ROLE_ADMIN")
     @PatchMapping("/{id}/role")
