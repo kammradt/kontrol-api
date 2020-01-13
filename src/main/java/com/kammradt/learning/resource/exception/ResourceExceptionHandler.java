@@ -3,6 +3,7 @@ package com.kammradt.learning.resource.exception;
 import com.kammradt.learning.domain.exception.ErrorResponse;
 import com.kammradt.learning.domain.exception.ErrorResponseList;
 import com.kammradt.learning.exception.NotFoundException;
+import com.kammradt.learning.exception.RequestClosedCannotBeUpdatedException;
 import com.kammradt.learning.exception.WrongConfirmationPasswordException;
 import com.kammradt.learning.service.exception.ExceptionHandlerService;
 import org.apache.tomcat.util.http.fileupload.FileUploadBase;
@@ -75,6 +76,14 @@ public class ResourceExceptionHandler extends ResponseEntityExceptionHandler {
 
         return exceptionHandlerService.defaultHandler(e);
     }
+
+    @ExceptionHandler(RequestClosedCannotBeUpdatedException.class)
+    public ResponseEntity<ErrorResponse> requestCannotBeUpdatedException(RequestClosedCannotBeUpdatedException e) {
+        return ResponseEntity
+                .status(HttpStatus.FORBIDDEN)
+                .body(new ErrorResponse(HttpStatus.FORBIDDEN.value(), e.getMessage(), new Date()));
+    }
+
 
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
