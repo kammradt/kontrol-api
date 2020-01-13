@@ -42,7 +42,7 @@ public class UserResource {
     @Secured("ROLE_REGULAR")
     @PatchMapping("/{id}/profile")
     public ResponseEntity<User> updateProfile(@PathVariable Long id, @RequestBody @Valid UserUpdateProfileDTO userDTO) {
-        User updatedUser = userService.updateProfile(userDTO);
+        User updatedUser = userService.updateProfile(userDTO.toUser());
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(updatedUser);

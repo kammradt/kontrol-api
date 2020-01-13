@@ -1,5 +1,6 @@
 package com.kammradt.learning.dto;
 
+import com.kammradt.learning.domain.User;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,5 +13,9 @@ public class UserUpdateProfileDTO {
 
     @Email(message = "Invalid email")
     private String email;
+
+    public User toUser() {
+        return new User(null, this.name, this.email, null, null, null, null);
+    }
 
 }

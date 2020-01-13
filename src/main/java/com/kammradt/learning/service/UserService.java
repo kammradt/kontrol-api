@@ -39,14 +39,14 @@ public class UserService implements UserDetailsService {
         return userRepository.save(user);
     }
 
-    public User updateProfile(UserUpdateProfileDTO userDTO) {
+    public User updateProfile(User user) {
         User currentUser = resourceAccessManager.getCurrentUser();
 
-        if (validationService.isNotNullAndNotEmpty(userDTO.getName()))
-            currentUser.setName(userDTO.getName());
+        if (validationService.isNotNullAndNotEmpty(user.getName()))
+            currentUser.setName(user.getName());
 
-        if (validationService.isNotNullAndNotEmpty(userDTO.getEmail()))
-            currentUser.setEmail(userDTO.getEmail());
+        if (validationService.isNotNullAndNotEmpty(user.getEmail()))
+            currentUser.setEmail(user.getEmail());
 
         return userRepository.save(currentUser);
     }
