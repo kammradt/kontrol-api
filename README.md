@@ -30,7 +30,7 @@ I'm following [this course](https://www.udemy.com/course/restful-springboot-aws)
 * [Relationships using annotations](https://github.com/kammradt/kontrol-api/blob/master/NOTES.md#relationships-using-annotations)
 * [HTTP Status Codes](https://github.com/kammradt/kontrol-api/blob/master/NOTES.md#http-status-codes)
 * [@NotNull & NotBlank validation](https://github.com/kammradt/kontrol-api/blob/master/NOTES.md#differences-between-notnull-and-notblank)
-
+* [Using EntityListeners for custom triggers on Database changes](https://github.com/kammradt/kontrol-api/blob/master/NOTES.md#using-entityListeners-for-custom-triggers-on-database-changes)
 
 ## Show your support
 

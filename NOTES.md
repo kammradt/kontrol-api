@@ -83,4 +83,30 @@ This is a more complete validation that covers the case of `""` or `"  "`, so it
 
 For me, makes sense using *@NotBlank* most of the time.
 
-## Using EntityListeners for custom triggers
+## Using EntityListeners for custom triggers on Database changes
+Let's imagine that we need to do some logic when a Entity (Domain class) is deleted from your database using a `Repository` or even a `Parent Cascade`.  
+
+At first, we could think about doing this logic on a `Service`, but the second case would not be contemplated.
+
+So, we can use `@EntityListeners` for that. We can configure it this way:
+
+
+```java
+@EntityListeners(RequestFileListener.class) // Add this annotation
+public class RequestFile implements Serializable { }
+```
+
+
+```java
+@Component
+public class RequestFileListener {
+    @Autowired SomeService someService;
+
+    @PreRemove // PrePersist, PreUpdate, PostLoad, PostPersist, PostUpdate, PostRemove...
+    void removing(RequestFile requestFile) {
+        someService.someMethod(requestFile.getName());
+    }
+
+}
+```
+
