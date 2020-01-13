@@ -89,14 +89,10 @@ public class UserResource {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<HashMap> login(@RequestBody @Valid UserLoginDTO user) {
-        String jwt = securityService.generateJWTToken(user);
-        HashMap<String, String> response = new HashMap<>();
-        response.put("token", jwt);
-        
+    public ResponseEntity<HashMap<String, String>> login(@RequestBody @Valid UserLoginDTO userDTO) {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(response);
+                .body(securityService.generateJWTToken(userDTO));
     }
 
     @PreAuthorize("@resourceAccessManager.isOwnUser(#id)")
