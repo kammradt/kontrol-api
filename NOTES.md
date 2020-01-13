@@ -10,8 +10,9 @@ public class User {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToMany(mappedBy = "user")
-    private List<Request> requests = new ArrayList<>(); 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private List<Request> requests = new ArrayList<>();
 }
 
 @Entity
@@ -26,7 +27,7 @@ public class Request {
 
 We undestand that a single **USER** is responsible and will have multiple **REQUESTS** (OneToMany) by saying:
 ```java
-@OneToMany(mappedBy = "user")
+@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 private List<Request> requests = new ArrayList<>(); 
 ```
 
@@ -81,3 +82,5 @@ Will give an error message if the given value is `null` or the length is equals 
 This is a more complete validation that covers the case of `""` or `"  "`, so it is a good practice use this in **mandatory/important** fields.
 
 For me, makes sense using *@NotBlank* most of the time.
+
+## Using EntityListeners for custom triggers
