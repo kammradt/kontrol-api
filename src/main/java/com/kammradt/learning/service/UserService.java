@@ -1,7 +1,6 @@
 package com.kammradt.learning.service;
 
 import com.kammradt.learning.domain.User;
-import com.kammradt.learning.dto.UserSaveDTO;
 import com.kammradt.learning.dto.UserUpdatePasswordDTO;
 import com.kammradt.learning.dto.UserUpdateProfileDTO;
 import com.kammradt.learning.dto.UserUpdateRoleDTO;
@@ -14,8 +13,6 @@ import com.kammradt.learning.security.ResourceAccessManager;
 import com.kammradt.learning.service.util.ValidationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -36,11 +33,9 @@ public class UserService implements UserDetailsService {
     @Autowired private ResourceAccessManager resourceAccessManager;
     @Autowired private ValidationService validationService;
 
-    public User save(UserSaveDTO userDTO) {
-        User user = userDTO.toUser();
+    public User save(User user) {
         String hashedPassword = generateHash(user.getPassword());
         user.setPassword(hashedPassword);
-
         return userRepository.save(user);
     }
 

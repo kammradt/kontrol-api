@@ -35,7 +35,7 @@ public class UserResource {
     public ResponseEntity<User> save(@RequestBody @Valid UserSaveDTO userDTO) {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(userService.save(userDTO));
+                .body(userService.save(userDTO.toUser()));
     }
 
     @PreAuthorize("@resourceAccessManager.isOwnUser(#id)")
