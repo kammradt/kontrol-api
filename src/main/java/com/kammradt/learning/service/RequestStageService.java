@@ -39,6 +39,11 @@ public class RequestStageService {
         return requestStageRepository.findAllByRequestId(requestId);
     }
 
+    private Request updateState(Long id, RequestState newState) {
+        Request request = requestService.findById(id);
+        request.setState(newState);
+        return requestRepository.save(request);
+    }
 
     public void deleteById(Long id) {
         Request toBeUpdated = findById(id).getRequest();
@@ -46,7 +51,7 @@ public class RequestStageService {
 
         RequestState newState = getNewStateAfterDeletion(toBeUpdated.getId());
 
-        requestService.updateState(toBeUpdated.getId(), newState);
+        updateState(toBeUpdated.getId(), newState);
     }
 
     private RequestState getNewStateAfterDeletion(Long requestId) {

@@ -2,15 +2,12 @@ package com.kammradt.learning.service;
 
 import com.kammradt.learning.domain.Request;
 import com.kammradt.learning.domain.enums.RequestState;
-import com.kammradt.learning.dto.RequestUpdateDTO;
 import com.kammradt.learning.exception.NotFoundException;
 import com.kammradt.learning.model.PageModel;
 import com.kammradt.learning.model.PageFilterDTO;
 import com.kammradt.learning.repository.RequestRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -50,12 +47,6 @@ public class RequestService {
 
     public void deleteById(Long id) {
         requestRepository.deleteById(id);
-    }
-
-    public Request updateState(Long id, RequestState newState) {
-        Request request = findById(id);
-        request.setState(newState);
-        return requestRepository.save(request);
     }
 
     public PageModel<Request> findAllByUserIdOnLazyMode(Long id, PageFilterDTO pageFilterDTO) {
