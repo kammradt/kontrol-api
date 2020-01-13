@@ -3,6 +3,7 @@ package com.kammradt.learning.service;
 import com.kammradt.learning.domain.Request;
 import com.kammradt.learning.domain.enums.RequestState;
 import com.kammradt.learning.exception.NotFoundException;
+import com.kammradt.learning.exception.RequestClosedCannotBeUpdatedException;
 import com.kammradt.learning.model.PageModel;
 import com.kammradt.learning.model.PageFilterDTO;
 import com.kammradt.learning.repository.RequestRepository;
@@ -27,6 +28,7 @@ public class RequestService {
     }
 
     public Request update(Long id, Request updatedRequest) {
+        verifyIfRequestCanBeUpdated(id);
         Request request = findById(id);
         updatedRequest.setId(id);
         updatedRequest.setCreationDate(request.getCreationDate());
@@ -57,5 +59,11 @@ public class RequestService {
                       resultPage.getSize(),
                       resultPage.getTotalPages(),
                       resultPage.getContent());
+    }
+
+    public void verifyIfRequestCanBeUpdated(Long requstId) {
+        Request request = findById(requstId);
+        if (request.getState().equals(RequestState.CLOSED))
+            throw new RequestClosedCannotBeUpdatedException("Request is already closed and cannot be updated!");
     }
 }
