@@ -1,7 +1,5 @@
 package com.kammradt.learning.dto;
 
-import com.kammradt.learning.domain.Request;
-import com.kammradt.learning.domain.RequestStage;
 import com.kammradt.learning.domain.User;
 import com.kammradt.learning.domain.enums.Role;
 import lombok.AllArgsConstructor;
@@ -11,10 +9,7 @@ import lombok.Setter;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.util.ArrayList;
-import java.util.List;
 
 @Getter @Setter
 @AllArgsConstructor
