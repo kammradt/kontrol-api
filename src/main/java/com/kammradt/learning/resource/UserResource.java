@@ -112,8 +112,7 @@ public class UserResource {
     @Secured("ROLE_ADMIN")
     @PatchMapping("/{id}/role")
     public ResponseEntity<?> updateRole(@PathVariable Long id, @RequestBody @Valid UserUpdateRoleDTO userDTO) {
-        userService.updateRole(id, userDTO);
-
+        userService.updateRole(id, userDTO.toUser().getRole());
         return ResponseEntity.ok().build();
     }
 

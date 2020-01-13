@@ -1,6 +1,7 @@
 package com.kammradt.learning.service;
 
 import com.kammradt.learning.domain.User;
+import com.kammradt.learning.domain.enums.Role;
 import com.kammradt.learning.dto.UserUpdatePasswordDTO;
 import com.kammradt.learning.dto.UserUpdateProfileDTO;
 import com.kammradt.learning.dto.UserUpdateRoleDTO;
@@ -13,6 +14,7 @@ import com.kammradt.learning.security.ResourceAccessManager;
 import com.kammradt.learning.service.util.ValidationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -97,10 +99,9 @@ public class UserService implements UserDetailsService {
         return result.orElseThrow(() -> new NotFoundException("No user found!"));
     }
 
-    public int updateRole(Long id, UserUpdateRoleDTO userDTO) {
-        User user = findById(id);
-        user.setRole(userDTO.getRole());
-        return userRepository.updateRole(user.getId(), user.getRole());
+    public int updateRole(Long userId, Role newRole) {
+        User userToBeUpdated = findById(userId);
+        return userRepository.updateRole(userToBeUpdated.getId(), newRole);
     }
 
     public long count() {
