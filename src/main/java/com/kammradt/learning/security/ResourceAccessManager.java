@@ -1,14 +1,11 @@
 package com.kammradt.learning.security;
 
-import com.kammradt.learning.domain.Request;
-import com.kammradt.learning.domain.RequestStage;
-import com.kammradt.learning.domain.User;
-import com.kammradt.learning.service.RequestService;
-import com.kammradt.learning.service.RequestStageService;
-import com.kammradt.learning.service.UserService;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.kammradt.learning.request.entities.Request;
+import com.kammradt.learning.stage.entities.RequestStage;
+import com.kammradt.learning.request.RequestService;
+import com.kammradt.learning.stage.RequestStageService;
+import com.kammradt.learning.user.UserService;
+import com.kammradt.learning.user.entities.User;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;

@@ -1,6 +1,5 @@
 package com.kammradt.learning.security;
 
-import com.kammradt.learning.constants.SecurityConstants;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
