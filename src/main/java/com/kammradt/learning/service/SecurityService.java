@@ -2,6 +2,7 @@ package com.kammradt.learning.service;
 
 import com.kammradt.learning.dto.UserLoginDTO;
 import com.kammradt.learning.security.JwtManager;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -16,12 +17,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@AllArgsConstructor
 public class SecurityService {
 
-    @Autowired
     private AuthenticationManager authenticationManager;
-
-    @Autowired
     private JwtManager jwtManager;
 
     public HashMap<String, String> generateJWTToken(UserLoginDTO user) {

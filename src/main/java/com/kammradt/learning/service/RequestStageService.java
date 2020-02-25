@@ -6,18 +6,19 @@ import com.kammradt.learning.domain.enums.RequestState;
 import com.kammradt.learning.exception.NotFoundException;
 import com.kammradt.learning.repository.RequestRepository;
 import com.kammradt.learning.repository.RequestStageRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
 
 @Service
+@AllArgsConstructor
 public class RequestStageService {
 
-    @Autowired private RequestStageRepository requestStageRepository;
-    @Autowired private RequestRepository requestRepository;
-    @Autowired private RequestService requestService;
+    private RequestStageRepository requestStageRepository;
+    private RequestRepository requestRepository;
+    private RequestService requestService;
 
 
     public RequestStage save(RequestStage requestStage) {
@@ -34,7 +35,6 @@ public class RequestStageService {
 
     public RequestStage findById(Long id) {
         return requestStageRepository.findById(id).orElseThrow(() -> new NotFoundException("There are no RequestStage with this ID"));
-
     }
 
     public List<RequestStage> findAllByRequestId(Long requestId) {
@@ -64,11 +64,10 @@ public class RequestStageService {
             newState = RequestState.OPEN;
         else if (stages.size() == 1)
             newState = stages.get(0).getState();
+        else if (stages.stream().anyMatch(stage -> stage.getState() == RequestState.CLOSED))
+            newState = RequestState.CLOSED;
         else
-            if (stages.stream().anyMatch(stage -> stage.getState() == RequestState.CLOSED))
-                newState = RequestState.CLOSED;
-            else
-                newState = RequestState.IN_PROGRESS;
+            newState = RequestState.IN_PROGRESS;
 
         return newState;
     }

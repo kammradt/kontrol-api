@@ -2,15 +2,18 @@ package com.kammradt.learning.listeners;
 
 import com.kammradt.learning.domain.RequestFile;
 import com.kammradt.learning.service.s3.S3Service;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.PreRemove;
 
 @Component
+@NoArgsConstructor
+@AllArgsConstructor
 public class RequestFileListener {
 
-    @Autowired S3Service s3Service;
+    S3Service s3Service;
 
     @PreRemove
     void removing(RequestFile requestFile) {

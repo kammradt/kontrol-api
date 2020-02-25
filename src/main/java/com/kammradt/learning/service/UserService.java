@@ -10,7 +10,9 @@ import com.kammradt.learning.model.PageFilterDTO;
 import com.kammradt.learning.repository.UserRepository;
 import com.kammradt.learning.security.ResourceAccessManager;
 import com.kammradt.learning.service.util.ValidationService;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -26,11 +28,12 @@ import java.util.Optional;
 import static com.kammradt.learning.service.util.HashUtil.generateHash;
 
 @Service
+@AllArgsConstructor
 public class UserService implements UserDetailsService {
 
-    @Autowired private UserRepository userRepository;
-    @Autowired private ResourceAccessManager resourceAccessManager;
-    @Autowired private ValidationService validationService;
+    private UserRepository userRepository;
+    private ResourceAccessManager resourceAccessManager;
+    private ValidationService validationService;
 
     public User save(User user) {
         String hashedPassword = generateHash(user.getPassword());

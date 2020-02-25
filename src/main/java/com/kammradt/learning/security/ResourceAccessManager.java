@@ -6,21 +6,25 @@ import com.kammradt.learning.domain.User;
 import com.kammradt.learning.service.RequestService;
 import com.kammradt.learning.service.RequestStageService;
 import com.kammradt.learning.service.UserService;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 @Component("resourceAccessManager")
 public class ResourceAccessManager {
 
-    @Autowired
     private UserService userService;
-
-    @Autowired
     private RequestService requestService;
-
-    @Autowired
     private RequestStageService requestStageService;
+
+    public ResourceAccessManager(@Lazy UserService userService, RequestService requestService, RequestStageService requestStageService) {
+        this.userService = userService;
+        this.requestService = requestService;
+        this.requestStageService = requestStageService;
+    }
 
     public boolean isOwnUser(Long userId) {
         User user = getCurrentUser();

@@ -3,13 +3,13 @@ package com.kammradt.learning.resource;
 import com.kammradt.learning.domain.Request;
 import com.kammradt.learning.domain.User;
 import com.kammradt.learning.dto.*;
-import com.kammradt.learning.model.PageModel;
 import com.kammradt.learning.model.PageFilterDTO;
+import com.kammradt.learning.model.PageModel;
 import com.kammradt.learning.security.ResourceAccessManager;
 import com.kammradt.learning.service.RequestService;
 import com.kammradt.learning.service.SecurityService;
 import com.kammradt.learning.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
@@ -21,13 +21,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
+@AllArgsConstructor
 @RequestMapping(value = "users")
 public class UserResource {
 
-    @Autowired private UserService userService;
-    @Autowired private RequestService requestService;
-    @Autowired private SecurityService securityService;
-    @Autowired private ResourceAccessManager resourceAccessManager;
+    private UserService userService;
+    private RequestService requestService;
+    private SecurityService securityService;
+    private ResourceAccessManager resourceAccessManager;
 
 
     @PostMapping

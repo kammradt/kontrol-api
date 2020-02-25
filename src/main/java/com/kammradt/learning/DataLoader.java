@@ -9,17 +9,19 @@ import com.kammradt.learning.dto.UserSaveDTO;
 import com.kammradt.learning.service.RequestService;
 import com.kammradt.learning.service.RequestStageService;
 import com.kammradt.learning.service.UserService;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
 @Component
+@AllArgsConstructor
 public class DataLoader implements ApplicationRunner {
 
-    @Autowired private UserService userService;
-    @Autowired private RequestService requestService;
-    @Autowired private RequestStageService requestStageService;
+   private UserService userService;
+   private RequestService requestService;
+   private RequestStageService requestStageService;
 
     @Override
     public void run(ApplicationArguments args) {

@@ -10,6 +10,7 @@ import com.kammradt.learning.model.PageFilterDTO;
 import com.kammradt.learning.service.RequestFileService;
 import com.kammradt.learning.service.RequestService;
 import com.kammradt.learning.service.RequestStageService;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,12 +24,13 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
+@AllArgsConstructor
 @RequestMapping(value = "requests")
 public class RequestResource {
 
-    @Autowired private RequestService requestService;
-    @Autowired private RequestStageService requestStageService;
-    @Autowired private RequestFileService requestFileService;
+    private RequestService requestService;
+    private RequestStageService requestStageService;
+    private RequestFileService requestFileService;
 
     @Secured("ROLE_REGULAR")
     @PreAuthorize("@resourceAccessManager.isOwnUser(#requestDTO.user.id)")

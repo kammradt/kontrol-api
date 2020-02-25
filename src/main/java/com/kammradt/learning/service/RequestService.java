@@ -4,10 +4,10 @@ import com.kammradt.learning.domain.Request;
 import com.kammradt.learning.domain.enums.RequestState;
 import com.kammradt.learning.exception.NotFoundException;
 import com.kammradt.learning.exception.RequestClosedCannotBeUpdatedException;
-import com.kammradt.learning.model.PageModel;
 import com.kammradt.learning.model.PageFilterDTO;
+import com.kammradt.learning.model.PageModel;
 import com.kammradt.learning.repository.RequestRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
@@ -15,9 +15,9 @@ import java.util.Date;
 import java.util.List;
 
 @Service
+@AllArgsConstructor
 public class RequestService {
 
-    @Autowired
     private RequestRepository requestRepository;
 
     public Request save(Request request) {
@@ -56,9 +56,9 @@ public class RequestService {
 
         return new PageModel<>(
                 (int) resultPage.getTotalElements(),
-                      resultPage.getSize(),
-                      resultPage.getTotalPages(),
-                      resultPage.getContent());
+                resultPage.getSize(),
+                resultPage.getTotalPages(),
+                resultPage.getContent());
     }
 
     public void verifyIfRequestCanBeUpdated(Long requstId) {
