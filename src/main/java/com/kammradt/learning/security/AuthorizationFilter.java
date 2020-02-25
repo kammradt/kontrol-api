@@ -29,7 +29,7 @@ public class AuthorizationFilter extends OncePerRequestFilter {
         String jwt = httpServletRequest.getHeader(HttpHeaders.AUTHORIZATION);
 
         if (jwt == null || !jwt.startsWith(SecurityConstants.JWT_PROVIDER)) {
-            ErrorResponse error = new ErrorResponse(HttpStatus.UNAUTHORIZED.value(), SecurityConstants.ERROR_INVALID_JWT, new Date());
+            ErrorResponse error = new ErrorResponse(HttpStatus.UNAUTHORIZED.value(), "Invalid JWT", new Date());
 
             ObjectMapper mapper = new ObjectMapper();
             String stringError = mapper.writeValueAsString(error);
