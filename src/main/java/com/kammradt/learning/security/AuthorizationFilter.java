@@ -1,8 +1,7 @@
 package com.kammradt.learning.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.kammradt.learning.constants.SecurityConstants;
-import com.kammradt.learning.domain.exception.ErrorResponse;
+import com.kammradt.learning.exception.ErrorResponse;
 import io.jsonwebtoken.Claims;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -23,7 +22,6 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class AuthorizationFilter extends OncePerRequestFilter {
     @Override
