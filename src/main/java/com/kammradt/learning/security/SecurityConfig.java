@@ -1,6 +1,7 @@
 package com.kammradt.learning.security;
 
 import com.kammradt.learning.service.UserService;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

@@ -6,8 +6,7 @@ import com.kammradt.learning.exception.NotFoundException;
 import com.kammradt.learning.exception.RequestClosedCannotBeUpdatedException;
 import com.kammradt.learning.exception.WrongConfirmationPasswordException;
 import com.kammradt.learning.service.exception.ExceptionHandlerService;
-import org.apache.tomcat.util.http.fileupload.FileUploadBase;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
@@ -27,9 +26,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @ControllerAdvice
+@AllArgsConstructor
 public class ResourceExceptionHandler extends ResponseEntityExceptionHandler {
 
-    @Autowired ExceptionHandlerService exceptionHandlerService;
+    ExceptionHandlerService exceptionHandlerService;
 
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<ErrorResponse> handleNotFoundException(NotFoundException e) {

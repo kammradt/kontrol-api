@@ -1,6 +1,5 @@
 package com.kammradt.learning.service.exception;
 
-import com.amazonaws.services.dynamodbv2.xspec.B;
 import com.kammradt.learning.domain.exception.ErrorResponse;
 import org.apache.tomcat.util.http.fileupload.FileUploadBase;
 import org.springframework.http.HttpStatus;

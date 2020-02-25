@@ -1,13 +1,10 @@
 package com.kammradt.learning.resource;
 
-import com.kammradt.learning.domain.Request;
 import com.kammradt.learning.domain.RequestStage;
-import com.kammradt.learning.domain.enums.RequestState;
 import com.kammradt.learning.dto.RequestStageSaveDTO;
-import com.kammradt.learning.dto.RequestUpdateDTO;
 import com.kammradt.learning.service.RequestService;
 import com.kammradt.learning.service.RequestStageService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
@@ -15,14 +12,14 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @RestController
+@AllArgsConstructor
 @RequestMapping(value = "request-stages")
 public class RequestStageResource {
 
-    @Autowired RequestStageService requestStageService;
-    @Autowired RequestService requestService;
+    RequestStageService requestStageService;
+    RequestService requestService;
 
     @PreAuthorize("@resourceAccessManager.isRequestOwner(#requestStageDTO.request.id) and @resourceAccessManager.isOwnUser(#requestStageDTO.user.id)")
     @Secured("ROLE_REGULAR")
