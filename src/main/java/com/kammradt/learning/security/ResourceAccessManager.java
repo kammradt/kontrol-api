@@ -1,26 +1,27 @@
 package com.kammradt.learning.security;
 
-import com.kammradt.learning.domain.Request;
-import com.kammradt.learning.domain.RequestStage;
-import com.kammradt.learning.domain.User;
-import com.kammradt.learning.service.RequestService;
-import com.kammradt.learning.service.RequestStageService;
-import com.kammradt.learning.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.kammradt.learning.request.entities.Request;
+import com.kammradt.learning.stage.entities.RequestStage;
+import com.kammradt.learning.request.RequestService;
+import com.kammradt.learning.stage.RequestStageService;
+import com.kammradt.learning.user.UserService;
+import com.kammradt.learning.user.entities.User;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 @Component("resourceAccessManager")
 public class ResourceAccessManager {
 
-    @Autowired
     private UserService userService;
-
-    @Autowired
     private RequestService requestService;
-
-    @Autowired
     private RequestStageService requestStageService;
+
+    public ResourceAccessManager(@Lazy UserService userService, RequestService requestService, RequestStageService requestStageService) {
+        this.userService = userService;
+        this.requestService = requestService;
+        this.requestStageService = requestStageService;
+    }
 
     public boolean isOwnUser(Long userId) {
         User user = getCurrentUser();

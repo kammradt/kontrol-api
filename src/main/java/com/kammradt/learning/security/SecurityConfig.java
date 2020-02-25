@@ -1,7 +1,8 @@
 package com.kammradt.learning.security;
 
-import com.kammradt.learning.service.UserService;
+import com.kammradt.learning.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -14,23 +15,22 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
-
-import java.util.Arrays;
 
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired private UserService userService;
-    @Autowired private CustomPasswordEncoder customPasswordEncoder;
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private CustomPasswordEncoder customPasswordEncoder;
+
+    @Value("${cors.app.whitelist.url}")
+    private String appUrl;
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -44,7 +44,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
                         .allowedMethods("*")
-                        .allowedOrigins("http://kontrol-everything.herokuapp.com")
+                        .allowedOrigins(appUrl)
                         .allowedHeaders("*");
             }
         };
@@ -55,7 +55,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.cors()
                 .and().csrf().disable()
                 .authorizeRequests()
-                    .anyRequest().authenticated();
+                .anyRequest().authenticated();
 
         http.addFilterBefore(new AuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
     }

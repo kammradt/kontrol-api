@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import static com.kammradt.learning.service.util.HashUtil.generateHash;
+import static com.kammradt.learning.security.HashUtil.generateHash;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringRunner.class)
