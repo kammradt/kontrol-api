@@ -27,7 +27,7 @@ public class TaskSaveDTO {
     private Project project;
 
     @NotNull(message = "State is required")
-    private Status state;
+    private Status status;
 
     @NotNull(message = "Start date is required")
     private Date start;
@@ -40,7 +40,7 @@ public class TaskSaveDTO {
                 .description(description)
                 .user(user)
                 .project(project)
-                .state(state)
+                .status(status)
                 .start(start)
                 .end(end)
                 .build();

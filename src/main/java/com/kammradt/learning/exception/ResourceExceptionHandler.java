@@ -1,7 +1,7 @@
 package com.kammradt.learning.exception;
 
 import com.kammradt.learning.exception.exceptions.NotFoundException;
-import com.kammradt.learning.exception.exceptions.RequestClosedCannotBeUpdatedException;
+import com.kammradt.learning.exception.exceptions.ProjectClosedCannotBeUpdatedException;
 import com.kammradt.learning.exception.exceptions.WrongConfirmationPasswordException;
 import lombok.AllArgsConstructor;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
@@ -74,8 +74,8 @@ public class ResourceExceptionHandler extends ResponseEntityExceptionHandler {
         return exceptionService.defaultHandler(e);
     }
 
-    @ExceptionHandler(RequestClosedCannotBeUpdatedException.class)
-    public ResponseEntity<ErrorResponse> requestCannotBeUpdatedException(RequestClosedCannotBeUpdatedException e) {
+    @ExceptionHandler(ProjectClosedCannotBeUpdatedException.class)
+    public ResponseEntity<ErrorResponse> projectCannotBeUpdatedException(ProjectClosedCannotBeUpdatedException e) {
         return ResponseEntity
                 .status(HttpStatus.FORBIDDEN)
                 .body(new ErrorResponse(HttpStatus.FORBIDDEN.value(), e.getMessage(), new Date()));

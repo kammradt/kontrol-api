@@ -3,8 +3,8 @@ package com.kammradt.learning.project;
 import com.kammradt.learning.commom.PageResponse;
 import com.kammradt.learning.commom.dtos.ParamsDTO;
 import com.kammradt.learning.exception.exceptions.NotFoundException;
-import com.kammradt.learning.exception.exceptions.RequestClosedCannotBeUpdatedException;
-import com.kammradt.learning.project.dtos.RequestResponse;
+import com.kammradt.learning.exception.exceptions.ProjectClosedCannotBeUpdatedException;
+import com.kammradt.learning.project.dtos.ProjectResponse;
 import com.kammradt.learning.project.entities.Project;
 import com.kammradt.learning.task.entities.Status;
 import lombok.AllArgsConstructor;
@@ -25,7 +25,7 @@ public class ProjectService {
     }
 
     public Project update(Long id, Project updatedProject) {
-        verifyIfRequestCanBeUpdated(id);
+        verifyIfProjectCanBeUpdated(id);
         Project project = findById(id);
         updatedProject.setId(id);
         updatedProject.setCreationDate(project.getCreationDate());
@@ -40,17 +40,13 @@ public class ProjectService {
         return projectRepository.findAll();
     }
 
-    public List<Project> findAllByUserId(Long id) {
-        return projectRepository.findAllByUserId(id);
-    }
-
     public void deleteById(Long id) {
         projectRepository.deleteById(id);
     }
 
-    public PageResponse<RequestResponse> findAllByUserIdOnLazyMode(Long id, ParamsDTO paramsDTO) {
+    public PageResponse<ProjectResponse> findAllByUserIdOnLazyMode(Long id, ParamsDTO paramsDTO) {
         Page<Project> resultPage = projectRepository.findAllByUserId(id, paramsDTO.toPageable());
-        var responseList = resultPage.getContent().stream().map(RequestResponse::build).collect(Collectors.toList());
+        var responseList = resultPage.getContent().stream().map(ProjectResponse::build).collect(Collectors.toList());
 
         return new PageResponse<>(
                 (int) resultPage.getTotalElements(),
@@ -59,9 +55,9 @@ public class ProjectService {
                 responseList);
     }
 
-    public void verifyIfRequestCanBeUpdated(Long requstId) {
+    public void verifyIfProjectCanBeUpdated(Long requstId) {
         Project project = findById(requstId);
-        if (project.getState().equals(Status.CLOSED))
-            throw new RequestClosedCannotBeUpdatedException("Request is already closed and cannot be updated!");
+        if (project.getStatus().equals(Status.CLOSED))
+            throw new ProjectClosedCannotBeUpdatedException("Request is already closed and cannot be updated!");
     }
 }

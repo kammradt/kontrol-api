@@ -21,7 +21,7 @@ public interface ProjectRepository extends JpaRepository<Project, Long> {
 
     @Modifying
     @Transactional
-    @Query("UPDATE Project SET state = ?2 WHERE id = ?1")
-    Integer updateRequestState(Long requestId, Status state);
+    @Query("UPDATE Project SET status = ?2 WHERE id = ?1")
+    Integer updateProjectStatus(Long requestId, Status status);
 
 }

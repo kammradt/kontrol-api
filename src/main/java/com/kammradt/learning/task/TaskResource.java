@@ -14,13 +14,13 @@ import javax.validation.Valid;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping(value = "request-stages")
+@RequestMapping(value = "tasks")
 public class TaskResource {
 
     TaskService taskService;
     ProjectService projectService;
 
-    @PreAuthorize("@resourceAccessManager.isRequestOwner(#requestStageDTO.project.id) and @resourceAccessManager.isOwnUser(#requestStageDTO.user.id)")
+    @PreAuthorize("@resourceAccessManager.isProjectOwner(#requestStageDTO.project.id) and @resourceAccessManager.isOwnUser(#requestStageDTO.user.id)")
     @Secured("ROLE_REGULAR")
     @PostMapping
     public ResponseEntity<Task> save(@RequestBody @Valid TaskSaveDTO requestStageDTO) {
@@ -29,7 +29,7 @@ public class TaskResource {
                 .body(taskService.save(requestStageDTO.toTask()));
     }
 
-    @PreAuthorize("@resourceAccessManager.isRequestStageOwner(#id)")
+    @PreAuthorize("@resourceAccessManager.isTaskOwner(#id)")
     @Secured("ROLE_REGULAR")
     @GetMapping("/{id}")
     public ResponseEntity<Task> findById(@PathVariable Long id) {
@@ -38,9 +38,7 @@ public class TaskResource {
                 .body(taskService.findById(id));
     }
 
-    // findAllByRequestId will be in requestResource
-
-    @PreAuthorize("@resourceAccessManager.isRequestStageOwner(#id)")
+    @PreAuthorize("@resourceAccessManager.isTaskOwner(#id)")
     @Secured("ROLE_REGULAR")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteById(@PathVariable Long id) {

@@ -53,7 +53,7 @@ public class Task implements Serializable {
 
     @Column(length = 12, nullable = false)
     @Enumerated(EnumType.STRING)
-    private Status state; // TODO change to status
+    private Status status;
 
 
 }
