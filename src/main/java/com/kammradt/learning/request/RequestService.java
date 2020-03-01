@@ -1,5 +1,6 @@
 package com.kammradt.learning.request;
 
+import com.kammradt.learning.request.dtos.RequestResponse;
 import com.kammradt.learning.stage.entities.RequestState;
 import com.kammradt.learning.exception.exceptions.NotFoundException;
 import com.kammradt.learning.exception.exceptions.RequestClosedCannotBeUpdatedException;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -47,14 +49,15 @@ public class RequestService {
         requestRepository.deleteById(id);
     }
 
-    public PageResponse<Request> findAllByUserIdOnLazyMode(Long id, ParamsDTO paramsDTO) {
+    public PageResponse<RequestResponse> findAllByUserIdOnLazyMode(Long id, ParamsDTO paramsDTO) {
         Page<Request> resultPage = requestRepository.findAllByUserId(id, paramsDTO.toPageable());
+        var responseList = resultPage.getContent().stream().map(RequestResponse::build).collect(Collectors.toList());
 
         return new PageResponse<>(
                 (int) resultPage.getTotalElements(),
                 resultPage.getSize(),
                 resultPage.getTotalPages(),
-                resultPage.getContent());
+                responseList);
     }
 
     public void verifyIfRequestCanBeUpdated(Long requstId) {
