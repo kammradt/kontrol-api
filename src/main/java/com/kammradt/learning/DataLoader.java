@@ -1,7 +1,9 @@
 package com.kammradt.learning;
 
+import com.kammradt.learning.project.ProjectMapper;
 import com.kammradt.learning.project.ProjectService;
 import com.kammradt.learning.project.dtos.ProjectSaveDTO;
+import com.kammradt.learning.task.TaskMapper;
 import com.kammradt.learning.task.TaskService;
 import com.kammradt.learning.task.dtos.TaskSaveDTO;
 import com.kammradt.learning.task.entities.Status;
@@ -20,7 +22,9 @@ public class DataLoader implements ApplicationRunner {
 
     private UserService userService;
     private ProjectService projectService;
+    private ProjectMapper projectMapper;
     private TaskService taskService;
+    private TaskMapper taskMapper;
 
     @Override
     public void run(ApplicationArguments args) {
@@ -36,48 +40,37 @@ public class DataLoader implements ApplicationRunner {
                 .password("12345678")
                 .build()
                 .toUser();
-        var savedVini = userService.save(vini);
+        userService.save(vini);
 
         var macbook = ProjectSaveDTO.builder()
                 .title("My Macbook PRO")
                 .description("I'm buying a new Macbook and I'm really happy")
-                .user(savedVini)
                 .start(new Date())
                 .end(new Date(new Date().getTime() + 1000 * 60 * 60 * 10))
-                .build()
-                .toProject();
-        var savedMacbook = projectService.save(macbook);
+                .build();
+        var savedMacbook = projectService.save(projectMapper.toProject(macbook));
 
-        taskService.save(TaskSaveDTO.builder()
+        taskService.save(taskMapper.toTask(TaskSaveDTO.builder()
                 .description("I'm getting the money to buy")
-                .user(savedVini)
                 .project(savedMacbook)
                 .status(Status.STARTED)
                 .start(new Date())
                 .end(new Date(new Date().getTime() + 1000 * 60 * 60 * 10))
-                .build()
-                .toTask()
-        );
-        taskService.save(TaskSaveDTO.builder()
+                .build()));
+        taskService.save(taskMapper.toTask(TaskSaveDTO.builder()
                 .description("I Bought and waiting")
-                .user(savedVini)
                 .project(savedMacbook)
                 .status(Status.IN_PROGRESS)
                 .start(new Date())
                 .end(new Date(new Date().getTime() + 1000 * 60 * 60 * 10))
-                .build()
-                .toTask()
-        );
-        taskService.save(TaskSaveDTO.builder()
+                .build()));
+        taskService.save(taskMapper.toTask(TaskSaveDTO.builder()
                 .description("Arrived at my house!")
-                .user(savedVini)
                 .project(savedMacbook)
                 .status(Status.DONE)
                 .start(new Date())
                 .end(new Date(new Date().getTime() + 1000 * 60 * 60 * 10))
-                .build()
-                .toTask()
-        );
+                .build()));
     }
 
     private boolean databaseIsEmpty() {

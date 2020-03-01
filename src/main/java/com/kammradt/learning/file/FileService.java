@@ -26,7 +26,6 @@ public class FileService {
 
 
     public List<File> uploadFiles(Long requestId, List<MultipartFile> files) {
-        projectService.verifyIfProjectCanBeUpdated(requestId);
         List<File> requestFiles = s3Service
                 .uploadMultipleFiles(files)
                 .stream().map(uploadedFileDTO -> uploadedFilesToEntities(requestId, uploadedFileDTO))

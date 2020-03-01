@@ -1,10 +1,8 @@
 package com.kammradt.learning.project.dtos;
 
 import com.kammradt.learning.file.entities.File;
-import com.kammradt.learning.project.entities.Project;
 import com.kammradt.learning.task.entities.Status;
 import com.kammradt.learning.task.entities.Task;
-import com.kammradt.learning.user.entities.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -30,9 +28,6 @@ public class ProjectUpdateDTO {
     @NotNull(message = "State is required")
     private Status status;
 
-    @NotNull(message = "User is required")
-    private User user;
-
     @Future
     private Date start;
 
@@ -42,16 +37,4 @@ public class ProjectUpdateDTO {
     private List<Task> tasks = new ArrayList<>();
     private List<File> files = new ArrayList<>();
 
-    public Project toProject() {
-        return Project.builder()
-                .title(title)
-                .description(description)
-                .status(status)
-                .user(user)
-                .start(start)
-                .end(end)
-                .tasks(tasks)
-                .files(files)
-                .build();
-    }
 }
