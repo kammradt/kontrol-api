@@ -46,7 +46,7 @@ public class ProjectSaveDTO {
                 .files(files)
                 .start(start)
                 .end(end)
-                .status(Status.OPEN)
+                .status(Status.STARTED)
                 .creationDate(new Date())
                 .build();
     }
