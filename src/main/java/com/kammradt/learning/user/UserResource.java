@@ -1,5 +1,7 @@
 package com.kammradt.learning.user;
 
+import com.kammradt.learning.request.RequestResource;
+import com.kammradt.learning.request.dtos.RequestResponse;
 import com.kammradt.learning.request.entities.Request;
 import com.kammradt.learning.commom.dtos.ParamsDTO;
 import com.kammradt.learning.commom.PageResponse;
@@ -98,12 +100,12 @@ public class UserResource {
     @PreAuthorize("@resourceAccessManager.isOwnUser(#id)")
     @Secured("ROLE_REGULAR")
     @GetMapping("/{id}/requests")
-    public ResponseEntity<PageResponse<Request>> findAllRequestsByUserId(
+    public ResponseEntity<PageResponse<RequestResponse>> findAllRequestsByUserId(
             @PathVariable Long id,
             @RequestParam Map<String, String> params
     ) {
         ParamsDTO paramsDTO = new ParamsDTO(params);
-        PageResponse<Request> pageResponse = requestService.findAllByUserIdOnLazyMode(id, paramsDTO);
+        PageResponse<RequestResponse> pageResponse = requestService.findAllByUserIdOnLazyMode(id, paramsDTO);
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(pageResponse);
