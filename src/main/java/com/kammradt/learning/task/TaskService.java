@@ -22,13 +22,13 @@ public class TaskService {
 
 
     public Task save(Task task) {
-        Long requestBeingUpdated = task.getProject().getId();
-        projectService.verifyIfProjectCanBeUpdated(requestBeingUpdated);
+        Long projectBeingUpdated = task.getProject().getId();
+        projectService.verifyIfProjectCanBeUpdated(projectBeingUpdated);
 
-        task.setRealizationDate(new Date());
+        task.setCreationDate(new Date());
         Task savedTask = taskRepository.save(task);
 
-        projectRepository.updateProjectStatus(requestBeingUpdated, task.getStatus());
+        projectRepository.updateProjectStatus(projectBeingUpdated, task.getStatus());
 
         return savedTask;
     }
@@ -61,11 +61,11 @@ public class TaskService {
 
         Status newStatus;
         if (tasks.isEmpty())
-            newStatus = Status.OPEN;
+            newStatus = Status.STARTED;
         else if (tasks.size() == 1)
             newStatus = tasks.get(0).getStatus();
-        else if (tasks.stream().anyMatch(stage -> stage.getStatus() == Status.CLOSED))
-            newStatus = Status.CLOSED;
+        else if (tasks.stream().anyMatch(stage -> stage.getStatus() == Status.DONE))
+            newStatus = Status.DONE;
         else
             newStatus = Status.IN_PROGRESS;
 

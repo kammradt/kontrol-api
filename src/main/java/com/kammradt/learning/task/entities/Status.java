@@ -1,7 +1,7 @@
 package com.kammradt.learning.task.entities;
 
 public enum Status {
-    OPEN,
+    STARTED,
     IN_PROGRESS,
-    CLOSED
+    DONE
 }

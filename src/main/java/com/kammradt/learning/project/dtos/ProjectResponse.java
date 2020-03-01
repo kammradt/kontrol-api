@@ -53,7 +53,7 @@ public class ProjectResponse implements Serializable {
 
     private static Float formatPercentage(Project project) {
         DecimalFormat df2 = new DecimalFormat("#.##");
-        Float numberOfDone = (float) Math.toIntExact(project.getTasks().stream().filter(r -> r.getStatus().equals(Status.CLOSED)).count());
+        Float numberOfDone = (float) Math.toIntExact(project.getTasks().stream().filter(r -> r.getStatus().equals(Status.DONE)).count());
         Float numberOfStages = (float) project.getTasks().size();
         Float percent = ((numberOfDone / numberOfStages) * 100);
         df2.format(percent);

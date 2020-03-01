@@ -27,9 +27,9 @@ public class Task implements Serializable {
     @Column(columnDefinition = "text", nullable = false)
     private String description;
 
-    @Column(name = "realization_date", nullable = false, updatable = false)
+    @Column(name = "creation_date", nullable = false, updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
-    private Date realizationDate;
+    private Date creationDate;
 
     @Column(nullable = false)
     @Temporal(TemporalType.TIMESTAMP)

@@ -33,7 +33,7 @@ public class ProjectService {
     }
 
     public Project findById(Long id) {
-        return projectRepository.findById(id).orElseThrow(() -> new NotFoundException("There are no Request with this ID"));
+        return projectRepository.findById(id).orElseThrow(() -> new NotFoundException("There are no Project with this ID"));
     }
 
     public List<Project> findAll() {
@@ -57,7 +57,7 @@ public class ProjectService {
 
     public void verifyIfProjectCanBeUpdated(Long requstId) {
         Project project = findById(requstId);
-        if (project.getStatus().equals(Status.CLOSED))
-            throw new ProjectClosedCannotBeUpdatedException("Request is already closed and cannot be updated!");
+        if (project.getStatus().equals(Status.DONE))
+            throw new ProjectClosedCannotBeUpdatedException("Project is already closed and cannot be updated!");
     }
 }
