@@ -1,10 +1,10 @@
-package com.kammradt.learning.request.entities;
+package com.kammradt.learning.project.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.kammradt.learning.file.entities.RequestFile;
-import com.kammradt.learning.stage.entities.RequestStage;
-import com.kammradt.learning.stage.entities.RequestState;
+import com.kammradt.learning.task.entities.Status;
+import com.kammradt.learning.task.entities.Task;
 import com.kammradt.learning.user.entities.User;
 import lombok.*;
 import org.hibernate.annotations.OnDelete;
@@ -19,14 +19,16 @@ import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter @Setter
+@Getter
+@Setter
 @Builder
 @Entity
-public class Request implements Serializable {
+public class Project implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(length = 100, nullable = false)
@@ -48,7 +50,7 @@ public class Request implements Serializable {
 
     @Column(length = 12, nullable = false)
     @Enumerated(EnumType.STRING)
-    private RequestState state;
+    private Status state; // TODO change to status
 
     @Column(nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
@@ -58,11 +60,11 @@ public class Request implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date end;
 
-    @OneToMany(mappedBy = "request", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    private List<RequestStage> stages = new ArrayList<>();
+    private List<Task> stages = new ArrayList<>(); // TODO change to tasks
 
-    @OneToMany(mappedBy = "request", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private List<RequestFile> files = new ArrayList<>();
 

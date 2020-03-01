@@ -85,11 +85,11 @@ public class ResourceExceptionHandler extends ResponseEntityExceptionHandler {
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
         List<String> errors = ex.getBindingResult().getAllErrors().stream()
-                                .map(DefaultMessageSourceResolvable::getDefaultMessage)
-                                .collect(Collectors.toList());
+                .map(DefaultMessageSourceResolvable::getDefaultMessage)
+                .collect(Collectors.toList());
         ErrorResponseList errorResponseList = new ErrorResponseList(HttpStatus.BAD_REQUEST.value(), "Invalid fields", new Date(), errors);
         return ResponseEntity
-                    .status(HttpStatus.BAD_REQUEST)
-                    .body(errorResponseList);
+                .status(HttpStatus.BAD_REQUEST)
+                .body(errorResponseList);
     }
 }

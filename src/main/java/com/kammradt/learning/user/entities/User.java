@@ -2,8 +2,8 @@ package com.kammradt.learning.user.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.kammradt.learning.request.entities.Request;
-import com.kammradt.learning.stage.entities.RequestStage;
+import com.kammradt.learning.project.entities.Project;
+import com.kammradt.learning.task.entities.Task;
 import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -15,7 +15,8 @@ import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter @Setter
+@Getter
+@Setter
 @Builder
 @Entity
 public class User implements Serializable {
@@ -46,12 +47,12 @@ public class User implements Serializable {
     @Getter(onMethod = @__({@JsonIgnore}))
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    private List<Request> requests = new ArrayList<>();
+    private List<Project> projects = new ArrayList<>();
 
     @Getter(onMethod = @__({@JsonIgnore}))
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    private List<RequestStage> stages = new ArrayList<>();
+    private List<Task> stages = new ArrayList<>(); // TODO change to tasks
 
 
 }

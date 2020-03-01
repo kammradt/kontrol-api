@@ -6,7 +6,8 @@ import lombok.Setter;
 import java.util.Date;
 import java.util.List;
 
-@Getter @Setter
+@Getter
+@Setter
 public class ErrorResponseList extends ErrorResponse {
 
     private static final long serialVersionUID = 1L;

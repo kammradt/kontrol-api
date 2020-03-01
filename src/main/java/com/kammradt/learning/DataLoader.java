@@ -1,10 +1,10 @@
 package com.kammradt.learning;
 
-import com.kammradt.learning.request.RequestService;
-import com.kammradt.learning.request.dtos.RequestSaveDTO;
-import com.kammradt.learning.stage.RequestStageService;
-import com.kammradt.learning.stage.dtos.RequestStageSaveDTO;
-import com.kammradt.learning.stage.entities.RequestState;
+import com.kammradt.learning.project.ProjectService;
+import com.kammradt.learning.project.dtos.RequestSaveDTO;
+import com.kammradt.learning.task.TaskService;
+import com.kammradt.learning.task.dtos.TaskSaveDTO;
+import com.kammradt.learning.task.entities.Status;
 import com.kammradt.learning.user.UserService;
 import com.kammradt.learning.user.dtos.UserSaveDTO;
 import lombok.AllArgsConstructor;
@@ -19,8 +19,8 @@ import java.util.Date;
 public class DataLoader implements ApplicationRunner {
 
     private UserService userService;
-    private RequestService requestService;
-    private RequestStageService requestStageService;
+    private ProjectService projectService;
+    private TaskService taskService;
 
     @Override
     public void run(ApplicationArguments args) {
@@ -46,37 +46,37 @@ public class DataLoader implements ApplicationRunner {
                 .end(new Date(new Date().getTime() + 1000 * 60 * 60 * 10))
                 .build()
                 .toRequest();
-        var savedMacbook = requestService.save(macbook);
+        var savedMacbook = projectService.save(macbook);
 
-        requestStageService.save(RequestStageSaveDTO.builder()
+        taskService.save(TaskSaveDTO.builder()
                 .description("I'm getting the money to buy")
                 .user(savedVini)
-                .request(savedMacbook)
-                .state(RequestState.OPEN)
+                .project(savedMacbook)
+                .state(Status.OPEN)
                 .start(new Date())
                 .end(new Date(new Date().getTime() + 1000 * 60 * 60 * 10))
                 .build()
-                .toRequestStage()
+                .toTask()
         );
-        requestStageService.save(RequestStageSaveDTO.builder()
+        taskService.save(TaskSaveDTO.builder()
                 .description("I Bought and waiting")
                 .user(savedVini)
-                .request(savedMacbook)
-                .state(RequestState.IN_PROGRESS)
+                .project(savedMacbook)
+                .state(Status.IN_PROGRESS)
                 .start(new Date())
                 .end(new Date(new Date().getTime() + 1000 * 60 * 60 * 10))
                 .build()
-                .toRequestStage()
+                .toTask()
         );
-        requestStageService.save(RequestStageSaveDTO.builder()
+        taskService.save(TaskSaveDTO.builder()
                 .description("Arrived at my house!")
                 .user(savedVini)
-                .request(savedMacbook)
-                .state(RequestState.CLOSED)
+                .project(savedMacbook)
+                .state(Status.CLOSED)
                 .start(new Date())
                 .end(new Date(new Date().getTime() + 1000 * 60 * 60 * 10))
                 .build()
-                .toRequestStage()
+                .toTask()
         );
     }
 

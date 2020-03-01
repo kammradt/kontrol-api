@@ -1,9 +1,9 @@
-package com.kammradt.learning.request.dtos;
+package com.kammradt.learning.project.dtos;
 
-import com.kammradt.learning.request.entities.Request;
 import com.kammradt.learning.file.entities.RequestFile;
-import com.kammradt.learning.stage.entities.RequestStage;
-import com.kammradt.learning.stage.entities.RequestState;
+import com.kammradt.learning.project.entities.Project;
+import com.kammradt.learning.task.entities.Status;
+import com.kammradt.learning.task.entities.Task;
 import com.kammradt.learning.user.entities.User;
 import lombok.*;
 
@@ -34,11 +34,11 @@ public class RequestSaveDTO {
     @Future
     private Date end;
 
-    private List<RequestStage> stages = new ArrayList<>();
+    private List<Task> stages = new ArrayList<>();
     private List<RequestFile> files = new ArrayList<>();
 
-    public Request toRequest() {
-        return Request.builder()
+    public Project toRequest() {
+        return Project.builder()
                 .subject(subject)
                 .description(description)
                 .user(user)
@@ -46,7 +46,7 @@ public class RequestSaveDTO {
                 .files(files)
                 .start(start)
                 .end(end)
-                .state(RequestState.OPEN)
+                .state(Status.OPEN)
                 .creationDate(new Date())
                 .build();
     }

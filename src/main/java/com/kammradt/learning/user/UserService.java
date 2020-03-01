@@ -1,9 +1,9 @@
 package com.kammradt.learning.user;
 
-import com.kammradt.learning.exception.exceptions.NotFoundException;
-import com.kammradt.learning.exception.exceptions.WrongConfirmationPasswordException;
 import com.kammradt.learning.commom.PageResponse;
 import com.kammradt.learning.commom.dtos.ParamsDTO;
+import com.kammradt.learning.exception.exceptions.NotFoundException;
+import com.kammradt.learning.exception.exceptions.WrongConfirmationPasswordException;
 import com.kammradt.learning.security.ResourceAccessManager;
 import com.kammradt.learning.user.dtos.UserUpdatePasswordDTO;
 import com.kammradt.learning.user.entities.Role;
@@ -83,10 +83,10 @@ public class UserService implements UserDetailsService {
         Page<User> resultPage = userRepository.findAll(paramsDTO.toPageable());
 
         return new PageResponse<>(
-                  (int) resultPage.getTotalElements(),
-                        resultPage.getSize(),
-                        resultPage.getTotalPages(),
-                        resultPage.getContent());
+                (int) resultPage.getTotalElements(),
+                resultPage.getSize(),
+                resultPage.getTotalPages(),
+                resultPage.getContent());
     }
 
     public User login(String email, String password) {

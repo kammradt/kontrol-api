@@ -7,7 +7,8 @@ import lombok.Setter;
 
 import javax.validation.constraints.NotNull;
 
-@Getter @Setter
+@Getter
+@Setter
 public class UserUpdateRoleDTO {
 
     @NotNull(message = "Role is required")

@@ -10,7 +10,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-@Getter @Setter
+@Getter
+@Setter
 public class ParamsDTO {
 
     private int page = 0;
@@ -25,7 +26,7 @@ public class ParamsDTO {
             this.size = Integer.parseInt(params.get("size"));
 
         if (params.containsKey("sort"))
-            this.sort = params.get("sort") ;
+            this.sort = params.get("sort");
     }
 
     public PageRequest toPageable() {

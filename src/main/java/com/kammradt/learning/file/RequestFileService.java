@@ -1,12 +1,12 @@
 package com.kammradt.learning.file;
 
-import com.kammradt.learning.file.dtos.RequestFileDTO;
-import com.kammradt.learning.request.entities.Request;
-import com.kammradt.learning.file.entities.RequestFile;
-import com.kammradt.learning.exception.exceptions.NotFoundException;
-import com.kammradt.learning.commom.dtos.ParamsDTO;
 import com.kammradt.learning.commom.PageResponse;
-import com.kammradt.learning.request.RequestService;
+import com.kammradt.learning.commom.dtos.ParamsDTO;
+import com.kammradt.learning.exception.exceptions.NotFoundException;
+import com.kammradt.learning.file.dtos.RequestFileDTO;
+import com.kammradt.learning.file.entities.RequestFile;
+import com.kammradt.learning.project.ProjectService;
+import com.kammradt.learning.project.entities.Project;
 import com.kammradt.learning.s3.S3Service;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -22,11 +22,11 @@ public class RequestFileService {
 
     private RequestFileRepository requestFileRepository;
     private S3Service s3Service;
-    private RequestService requestService;
+    private ProjectService projectService;
 
 
     public List<RequestFile> uploadFiles(Long requestId, List<MultipartFile> files) {
-        requestService.verifyIfRequestCanBeUpdated(requestId);
+        projectService.verifyIfRequestCanBeUpdated(requestId);
         List<RequestFile> requestFiles = s3Service
                 .uploadMultipleFiles(files)
                 .stream().map(uploadedFileDTO -> uploadedFilesToEntities(requestId, uploadedFileDTO))
@@ -36,13 +36,13 @@ public class RequestFileService {
 
     private RequestFile uploadedFilesToEntities(Long requestId, RequestFileDTO uploadedFileDTO) {
         RequestFile requestFile = uploadedFileDTO.toRequestFile();
-        Request request = requestService.findById(requestId);
-        requestFile.setRequest(request);
+        Project project = projectService.findById(requestId);
+        requestFile.setProject(project);
         return requestFile;
     }
 
     public PageResponse<RequestFile> findAllByRequestId(Long requestId, ParamsDTO paramsDTO) {
-        Page<RequestFile> page = requestFileRepository.findAllByRequestId(requestId, paramsDTO.toPageable());
+        Page<RequestFile> page = requestFileRepository.findAllByProjectId(requestId, paramsDTO.toPageable());
 
         return new PageResponse<>(
                 (int) page.getTotalElements(),
