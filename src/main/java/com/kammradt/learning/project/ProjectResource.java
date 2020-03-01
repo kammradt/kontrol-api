@@ -29,23 +29,26 @@ public class ProjectResource {
     private ProjectService projectService;
     private TaskService taskService;
     private FileService fileService;
+    private ProjectMapper projectMapper;
 
     @Secured("ROLE_REGULAR")
-    @PreAuthorize("@resourceAccessManager.isOwnUser(#requestDTO.user.id)")
+    @PreAuthorize("@resourceAccessManager.isOwnUser(#resourceAccessManager.getCurrentUser.id)")
     @PostMapping
-    public ResponseEntity<Project> save(@RequestBody @Valid ProjectSaveDTO requestDTO) {
+    public ResponseEntity<Project> save(@RequestBody @Valid ProjectSaveDTO dto) {
+        var project = projectMapper.toProject(dto);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(projectService.save(requestDTO.toProject()));
+                .body(projectService.save(project));
     }
 
     @Secured("ROLE_REGULAR")
     @PreAuthorize("@resourceAccessManager.isProjectOwner(#id)")
     @PutMapping("/{id}")
-    public ResponseEntity<Project> update(@PathVariable Long id, @RequestBody @Valid ProjectUpdateDTO requestDTO) {
+    public ResponseEntity<Project> update(@PathVariable Long id, @RequestBody @Valid ProjectUpdateDTO dto) {
+        var project = projectMapper.toProject(dto);
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(projectService.update(id, requestDTO.toProject()));
+                .body(projectService.update(project));
     }
 
     @Secured("ROLE_REGULAR")

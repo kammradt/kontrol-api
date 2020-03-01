@@ -1,6 +1,5 @@
 package com.kammradt.learning.task;
 
-import com.kammradt.learning.project.ProjectService;
 import com.kammradt.learning.task.dtos.TaskSaveDTO;
 import com.kammradt.learning.task.entities.Task;
 import lombok.AllArgsConstructor;
@@ -17,16 +16,17 @@ import javax.validation.Valid;
 @RequestMapping(value = "tasks")
 public class TaskResource {
 
-    TaskService taskService;
-    ProjectService projectService;
+    private TaskService taskService;
+    private TaskMapper taskMapper;
 
-    @PreAuthorize("@resourceAccessManager.isProjectOwner(#requestStageDTO.project.id) and @resourceAccessManager.isOwnUser(#requestStageDTO.user.id)")
+    @PreAuthorize("@resourceAccessManager.isProjectOwner(#dto.project.id) and @resourceAccessManager.isOwnUser(#resourceAccessManager.getCurrentUser.id)")
     @Secured("ROLE_REGULAR")
     @PostMapping
-    public ResponseEntity<Task> save(@RequestBody @Valid TaskSaveDTO requestStageDTO) {
+    public ResponseEntity<Task> save(@RequestBody @Valid TaskSaveDTO dto) {
+        var task = taskMapper.toTask(dto);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(taskService.save(requestStageDTO.toTask()));
+                .body(taskService.save(task));
     }
 
     @PreAuthorize("@resourceAccessManager.isTaskOwner(#id)")

@@ -3,32 +3,26 @@ package com.kammradt.learning.project;
 import com.kammradt.learning.commom.PageResponse;
 import com.kammradt.learning.commom.dtos.ParamsDTO;
 import com.kammradt.learning.exception.exceptions.NotFoundException;
-import com.kammradt.learning.exception.exceptions.ProjectClosedCannotBeUpdatedException;
 import com.kammradt.learning.project.dtos.ProjectResponse;
 import com.kammradt.learning.project.entities.Project;
-import com.kammradt.learning.task.entities.Status;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
 public class ProjectService {
 
     private ProjectRepository projectRepository;
+    private ProjectMapper projectMapper;
 
     public Project save(Project project) {
         return projectRepository.save(project);
     }
 
-    public Project update(Long id, Project updatedProject) {
-        verifyIfProjectCanBeUpdated(id);
-        Project project = findById(id);
-        updatedProject.setId(id);
-        updatedProject.setCreationDate(project.getCreationDate());
+    public Project update(Project updatedProject) {
         return projectRepository.save(updatedProject);
     }
 
@@ -46,18 +40,12 @@ public class ProjectService {
 
     public PageResponse<ProjectResponse> findAllByUserIdOnLazyMode(Long id, ParamsDTO paramsDTO) {
         Page<Project> resultPage = projectRepository.findAllByUserId(id, paramsDTO.toPageable());
-        var responseList = resultPage.getContent().stream().map(ProjectResponse::build).collect(Collectors.toList());
+        var responseList = projectMapper.toResponseList(resultPage.getContent());
 
         return new PageResponse<>(
                 (int) resultPage.getTotalElements(),
                 resultPage.getSize(),
                 resultPage.getTotalPages(),
                 responseList);
-    }
-
-    public void verifyIfProjectCanBeUpdated(Long requstId) {
-        Project project = findById(requstId);
-        if (project.getStatus().equals(Status.DONE))
-            throw new ProjectClosedCannotBeUpdatedException("Project is already closed and cannot be updated!");
     }
 }

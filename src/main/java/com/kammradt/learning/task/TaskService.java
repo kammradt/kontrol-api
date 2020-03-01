@@ -9,7 +9,6 @@ import com.kammradt.learning.task.entities.Task;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -20,14 +19,9 @@ public class TaskService {
     private ProjectRepository projectRepository;
     private ProjectService projectService;
 
-
     public Task save(Task task) {
         Long projectBeingUpdated = task.getProject().getId();
-        projectService.verifyIfProjectCanBeUpdated(projectBeingUpdated);
-
-        task.setCreationDate(new Date());
         Task savedTask = taskRepository.save(task);
-
         projectRepository.updateProjectStatus(projectBeingUpdated, task.getStatus());
 
         return savedTask;
@@ -51,9 +45,9 @@ public class TaskService {
         Project toBeUpdated = findById(id).getProject();
         taskRepository.deleteById(id);
 
-        Status newState = getNewStateAfterDeletion(toBeUpdated.getId());
+        Status newStatus = getNewStateAfterDeletion(toBeUpdated.getId());
 
-        updateStatus(toBeUpdated.getId(), newState);
+        updateStatus(toBeUpdated.getId(), newStatus);
     }
 
     private Status getNewStateAfterDeletion(Long requestId) {
