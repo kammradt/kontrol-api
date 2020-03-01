@@ -20,9 +20,6 @@ public class RequestService {
     private RequestRepository requestRepository;
 
     public Request save(Request request) {
-        request.setState(RequestState.OPEN);
-        request.setCreationDate(new Date());
-
         return requestRepository.save(request);
     }
 

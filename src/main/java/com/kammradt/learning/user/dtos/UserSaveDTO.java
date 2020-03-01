@@ -2,16 +2,13 @@ package com.kammradt.learning.user.dtos;
 
 import com.kammradt.learning.user.entities.Role;
 import com.kammradt.learning.user.entities.User;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
-@Getter @Setter
+@Getter @Setter @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserSaveDTO {
@@ -26,7 +23,12 @@ public class UserSaveDTO {
     private String password;
 
     public User toUser() {
-        return new User(null, this.name, this.email, this.password, Role.REGULAR, null, null);
+        return User.builder()
+                .name(name)
+                .email(email)
+                .password(password)
+                .role(Role.REGULAR)
+                .build();
     }
 
 }

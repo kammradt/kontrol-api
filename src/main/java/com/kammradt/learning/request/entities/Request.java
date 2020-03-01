@@ -6,10 +6,7 @@ import com.kammradt.learning.file.entities.RequestFile;
 import com.kammradt.learning.stage.entities.RequestStage;
 import com.kammradt.learning.stage.entities.RequestState;
 import com.kammradt.learning.user.entities.User;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -23,6 +20,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter @Setter
+@Builder
 @Entity
 public class Request implements Serializable {
 
@@ -51,6 +49,14 @@ public class Request implements Serializable {
     @Column(length = 12, nullable = false)
     @Enumerated(EnumType.STRING)
     private RequestState state;
+
+    @Column(nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date start;
+
+    @Column(nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date end;
 
     @OneToMany(mappedBy = "request", cascade = CascadeType.ALL)
     @OnDelete(action = OnDeleteAction.CASCADE)
