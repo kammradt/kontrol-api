@@ -9,5 +9,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface RequestFileRepository extends JpaRepository<RequestFile, Long> {
 
-    Page<RequestFile> findAllByRequestId(Long requestId, Pageable pageable);
+    Page<RequestFile> findAllByProjectId(Long requestId, Pageable pageable);
 }

@@ -1,10 +1,10 @@
-package com.kammradt.learning.request.dtos;
+package com.kammradt.learning.project.dtos;
 
-import com.kammradt.learning.request.entities.Request;
 import com.kammradt.learning.file.entities.RequestFile;
-import com.kammradt.learning.stage.entities.RequestStage;
+import com.kammradt.learning.project.entities.Project;
+import com.kammradt.learning.task.entities.Status;
+import com.kammradt.learning.task.entities.Task;
 import com.kammradt.learning.user.entities.User;
-import com.kammradt.learning.stage.entities.RequestState;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,7 +27,7 @@ public class RequestUpdateDTO {
     private String description;
 
     @NotNull(message = "State is required")
-    private RequestState state;
+    private Status state;
 
     @NotNull(message = "User is required")
     private User user;
@@ -38,11 +38,11 @@ public class RequestUpdateDTO {
     @Future
     private Date end;
 
-    private List<RequestStage> stages = new ArrayList<>();
+    private List<Task> stages = new ArrayList<>();
     private List<RequestFile> files = new ArrayList<>();
 
-    public Request toRequest() {
-        return Request.builder()
+    public Project toRequest() {
+        return Project.builder()
                 .subject(subject)
                 .description(description)
                 .state(state)

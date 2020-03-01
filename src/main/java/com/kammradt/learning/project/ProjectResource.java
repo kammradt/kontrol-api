@@ -1,14 +1,14 @@
-package com.kammradt.learning.request;
+package com.kammradt.learning.project;
 
-import com.kammradt.learning.file.entities.RequestFile;
-import com.kammradt.learning.stage.entities.RequestStage;
-import com.kammradt.learning.request.dtos.RequestSaveDTO;
-import com.kammradt.learning.request.dtos.RequestUpdateDTO;
 import com.kammradt.learning.commom.PageResponse;
 import com.kammradt.learning.commom.dtos.ParamsDTO;
-import com.kammradt.learning.request.entities.Request;
 import com.kammradt.learning.file.RequestFileService;
-import com.kammradt.learning.stage.RequestStageService;
+import com.kammradt.learning.file.entities.RequestFile;
+import com.kammradt.learning.project.dtos.RequestSaveDTO;
+import com.kammradt.learning.project.dtos.RequestUpdateDTO;
+import com.kammradt.learning.project.entities.Project;
+import com.kammradt.learning.task.TaskService;
+import com.kammradt.learning.task.entities.Task;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,45 +24,45 @@ import java.util.Map;
 @RestController
 @AllArgsConstructor
 @RequestMapping(value = "requests")
-public class RequestResource {
+public class ProjectResource {
 
-    private RequestService requestService;
-    private RequestStageService requestStageService;
+    private ProjectService projectService;
+    private TaskService taskService;
     private RequestFileService requestFileService;
 
     @Secured("ROLE_REGULAR")
     @PreAuthorize("@resourceAccessManager.isOwnUser(#requestDTO.user.id)")
     @PostMapping
-    public ResponseEntity<Request> save(@RequestBody @Valid RequestSaveDTO requestDTO) {
+    public ResponseEntity<Project> save(@RequestBody @Valid RequestSaveDTO requestDTO) {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(requestService.save(requestDTO.toRequest()));
+                .body(projectService.save(requestDTO.toRequest()));
     }
 
     @Secured("ROLE_REGULAR")
     @PreAuthorize("@resourceAccessManager.isRequestOwner(#id)")
     @PutMapping("/{id}")
-    public ResponseEntity<Request> update(@PathVariable Long id, @RequestBody @Valid RequestUpdateDTO requestDTO) {
+    public ResponseEntity<Project> update(@PathVariable Long id, @RequestBody @Valid RequestUpdateDTO requestDTO) {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(requestService.update(id, requestDTO.toRequest()));
+                .body(projectService.update(id, requestDTO.toRequest()));
     }
 
     @Secured("ROLE_REGULAR")
     @PreAuthorize("@resourceAccessManager.isRequestOwner(#id)")
     @GetMapping("/{id}")
-    public ResponseEntity<Request> findById(@PathVariable Long id) {
+    public ResponseEntity<Project> findById(@PathVariable Long id) {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(requestService.findById(id));
+                .body(projectService.findById(id));
     }
 
     @Secured("ROLE_ADMIN")
     @GetMapping
-    public ResponseEntity<List<Request>> findAll() {
+    public ResponseEntity<List<Project>> findAll() {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(requestService.findAll());
+                .body(projectService.findAll());
     }
 
     // findAllByUserId will be in userResource
@@ -71,17 +71,17 @@ public class RequestResource {
     @PreAuthorize("@resourceAccessManager.isRequestOwner(#id)")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteById(@PathVariable long id) {
-        requestService.deleteById(id);
+        projectService.deleteById(id);
         return ResponseEntity.ok().build();
     }
 
     @Secured("ROLE_REGULAR")
     @PreAuthorize("@resourceAccessManager.isRequestOwner(#id)")
     @GetMapping("/{id}/request-stages")
-    public ResponseEntity<List<RequestStage>> findAllRequestStagesByRequestId(@PathVariable Long id) {
+    public ResponseEntity<List<Task>> findAllRequestStagesByRequestId(@PathVariable Long id) {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(requestStageService.findAllByRequestId(id));
+                .body(taskService.findAllByRequestId(id));
     }
 
     @Secured("ROLE_REGULAR")

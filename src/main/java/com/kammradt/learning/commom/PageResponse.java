@@ -9,7 +9,8 @@ import java.io.Serializable;
 import java.util.List;
 
 
-@Getter @Setter
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class PageResponse<T> implements Serializable {

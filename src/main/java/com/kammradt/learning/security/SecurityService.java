@@ -1,7 +1,6 @@
 package com.kammradt.learning.security;
 
 import com.kammradt.learning.user.dtos.UserLoginDTO;
-import com.kammradt.learning.security.JwtManager;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

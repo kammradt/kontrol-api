@@ -2,7 +2,7 @@ package com.kammradt.learning.file.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.kammradt.learning.file.RequestFileListener;
-import com.kammradt.learning.request.entities.Request;
+import com.kammradt.learning.project.entities.Project;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,7 +12,8 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Getter @Setter
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @EntityListeners(RequestFileListener.class)
@@ -34,8 +35,8 @@ public class RequestFile implements Serializable {
     private String location;
 
     @ManyToOne
-    @JoinColumn(name = "request_id", nullable = false)
+    @JoinColumn(name = "project_id", nullable = false)
     @Getter(onMethod = @__({@JsonIgnore}))
-    private Request request;
+    private Project project;
 
 }

@@ -1,8 +1,8 @@
-package com.kammradt.learning.stage.entities;
+package com.kammradt.learning.task.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.kammradt.learning.request.entities.Request;
+import com.kammradt.learning.project.entities.Project;
 import com.kammradt.learning.user.entities.User;
 import lombok.*;
 
@@ -12,10 +12,11 @@ import java.util.Date;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter @Setter
+@Getter
+@Setter
 @Builder
-@Entity(name = "request_stage")
-public class RequestStage implements Serializable {
+@Entity(name = "task")
+public class Task implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -47,13 +48,12 @@ public class RequestStage implements Serializable {
     @Getter(onMethod = @__({@JsonIgnore}))
     @Setter(onMethod = @__({@JsonProperty}))
     @ManyToOne
-    @JoinColumn(name = "request_id", nullable = false)
-    private Request request;
+    @JoinColumn(name = "project_id", nullable = false)
+    private Project project;
 
     @Column(length = 12, nullable = false)
     @Enumerated(EnumType.STRING)
-    private RequestState state;
-
+    private Status state; // TODO change to status
 
 
 }

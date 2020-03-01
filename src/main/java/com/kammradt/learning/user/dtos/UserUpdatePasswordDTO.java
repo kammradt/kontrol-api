@@ -6,7 +6,8 @@ import lombok.Setter;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
-@Getter @Setter
+@Getter
+@Setter
 public class UserUpdatePasswordDTO {
 
     @NotBlank(message = "Insert a valid password")

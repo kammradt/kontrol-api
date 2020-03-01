@@ -1,9 +1,9 @@
 package com.kammradt.learning.security;
 
-import com.kammradt.learning.request.entities.Request;
-import com.kammradt.learning.stage.entities.RequestStage;
-import com.kammradt.learning.request.RequestService;
-import com.kammradt.learning.stage.RequestStageService;
+import com.kammradt.learning.project.ProjectService;
+import com.kammradt.learning.project.entities.Project;
+import com.kammradt.learning.task.TaskService;
+import com.kammradt.learning.task.entities.Task;
 import com.kammradt.learning.user.UserService;
 import com.kammradt.learning.user.entities.User;
 import org.springframework.context.annotation.Lazy;
@@ -14,13 +14,13 @@ import org.springframework.stereotype.Component;
 public class ResourceAccessManager {
 
     private UserService userService;
-    private RequestService requestService;
-    private RequestStageService requestStageService;
+    private ProjectService projectService;
+    private TaskService taskService;
 
-    public ResourceAccessManager(@Lazy UserService userService, RequestService requestService, RequestStageService requestStageService) {
+    public ResourceAccessManager(@Lazy UserService userService, ProjectService projectService, TaskService taskService) {
         this.userService = userService;
-        this.requestService = requestService;
-        this.requestStageService = requestStageService;
+        this.projectService = projectService;
+        this.taskService = taskService;
     }
 
     public boolean isOwnUser(Long userId) {
@@ -31,16 +31,16 @@ public class ResourceAccessManager {
 
     public boolean isRequestOwner(Long resourceId) {
         User user = getCurrentUser();
-        Request request = requestService.findById(resourceId);
+        Project project = projectService.findById(resourceId);
 
-        return user.getId().equals(request.getUser().getId());
+        return user.getId().equals(project.getUser().getId());
     }
 
     public boolean isRequestStageOwner(Long resourceId) {
         User user = getCurrentUser();
-        RequestStage requestStage = requestStageService.findById(resourceId);
+        Task task = taskService.findById(resourceId);
 
-        return user.getId().equals(requestStage.getUser().getId());
+        return user.getId().equals(task.getUser().getId());
     }
 
 

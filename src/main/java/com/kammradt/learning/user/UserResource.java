@@ -1,11 +1,9 @@
 package com.kammradt.learning.user;
 
-import com.kammradt.learning.request.RequestResource;
-import com.kammradt.learning.request.dtos.RequestResponse;
-import com.kammradt.learning.request.entities.Request;
-import com.kammradt.learning.commom.dtos.ParamsDTO;
 import com.kammradt.learning.commom.PageResponse;
-import com.kammradt.learning.request.RequestService;
+import com.kammradt.learning.commom.dtos.ParamsDTO;
+import com.kammradt.learning.project.ProjectService;
+import com.kammradt.learning.project.dtos.RequestResponse;
 import com.kammradt.learning.security.ResourceAccessManager;
 import com.kammradt.learning.security.SecurityService;
 import com.kammradt.learning.user.dtos.*;
@@ -27,7 +25,7 @@ import java.util.Map;
 public class UserResource {
 
     private UserService userService;
-    private RequestService requestService;
+    private ProjectService projectService;
     private SecurityService securityService;
     private ResourceAccessManager resourceAccessManager;
 
@@ -105,7 +103,7 @@ public class UserResource {
             @RequestParam Map<String, String> params
     ) {
         ParamsDTO paramsDTO = new ParamsDTO(params);
-        PageResponse<RequestResponse> pageResponse = requestService.findAllByUserIdOnLazyMode(id, paramsDTO);
+        PageResponse<RequestResponse> pageResponse = projectService.findAllByUserIdOnLazyMode(id, paramsDTO);
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(pageResponse);

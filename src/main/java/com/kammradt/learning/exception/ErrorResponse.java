@@ -9,7 +9,8 @@ import java.io.Serializable;
 import java.util.Date;
 
 
-@Getter @Setter
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class ErrorResponse implements Serializable {

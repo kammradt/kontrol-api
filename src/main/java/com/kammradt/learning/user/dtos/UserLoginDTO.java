@@ -10,7 +10,8 @@ import javax.validation.constraints.NotBlank;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter @Setter
+@Getter
+@Setter
 public class UserLoginDTO {
 
     @Email(message = "Invalid email address")

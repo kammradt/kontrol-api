@@ -1,8 +1,8 @@
-package com.kammradt.learning.stage;
+package com.kammradt.learning.task;
 
-import com.kammradt.learning.request.RequestService;
-import com.kammradt.learning.stage.dtos.RequestStageSaveDTO;
-import com.kammradt.learning.stage.entities.RequestStage;
+import com.kammradt.learning.project.ProjectService;
+import com.kammradt.learning.task.dtos.TaskSaveDTO;
+import com.kammradt.learning.task.entities.Task;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,27 +15,27 @@ import javax.validation.Valid;
 @RestController
 @AllArgsConstructor
 @RequestMapping(value = "request-stages")
-public class RequestStageResource {
+public class TaskResource {
 
-    RequestStageService requestStageService;
-    RequestService requestService;
+    TaskService taskService;
+    ProjectService projectService;
 
-    @PreAuthorize("@resourceAccessManager.isRequestOwner(#requestStageDTO.request.id) and @resourceAccessManager.isOwnUser(#requestStageDTO.user.id)")
+    @PreAuthorize("@resourceAccessManager.isRequestOwner(#requestStageDTO.project.id) and @resourceAccessManager.isOwnUser(#requestStageDTO.user.id)")
     @Secured("ROLE_REGULAR")
     @PostMapping
-    public ResponseEntity<RequestStage> save(@RequestBody @Valid RequestStageSaveDTO requestStageDTO) {
+    public ResponseEntity<Task> save(@RequestBody @Valid TaskSaveDTO requestStageDTO) {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(requestStageService.save(requestStageDTO.toRequestStage()));
+                .body(taskService.save(requestStageDTO.toTask()));
     }
 
     @PreAuthorize("@resourceAccessManager.isRequestStageOwner(#id)")
     @Secured("ROLE_REGULAR")
     @GetMapping("/{id}")
-    public ResponseEntity<RequestStage> findById(@PathVariable Long id) {
+    public ResponseEntity<Task> findById(@PathVariable Long id) {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(requestStageService.findById(id));
+                .body(taskService.findById(id));
     }
 
     // findAllByRequestId will be in requestResource
@@ -44,7 +44,7 @@ public class RequestStageResource {
     @Secured("ROLE_REGULAR")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteById(@PathVariable Long id) {
-        requestStageService.deleteById(id);
+        taskService.deleteById(id);
         return ResponseEntity.ok().build();
     }
 }

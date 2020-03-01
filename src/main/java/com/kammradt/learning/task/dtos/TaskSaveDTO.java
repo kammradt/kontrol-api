@@ -1,23 +1,21 @@
-package com.kammradt.learning.stage.dtos;
+package com.kammradt.learning.task.dtos;
 
-import com.kammradt.learning.request.entities.Request;
-import com.kammradt.learning.stage.entities.RequestStage;
+import com.kammradt.learning.project.entities.Project;
+import com.kammradt.learning.task.entities.Status;
+import com.kammradt.learning.task.entities.Task;
 import com.kammradt.learning.user.entities.User;
-import com.kammradt.learning.stage.entities.RequestState;
 import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter @Setter
+@Getter
+@Setter
 @Builder
-public class RequestStageSaveDTO {
+public class TaskSaveDTO {
 
     @NotBlank(message = "Description is required")
     private String description;
@@ -25,11 +23,11 @@ public class RequestStageSaveDTO {
     @NotNull(message = "User is required")
     private User user;
 
-    @NotNull(message = "Request is required")
-    private Request request;
+    @NotNull(message = "Project is required")
+    private Project project;
 
     @NotNull(message = "State is required")
-    private RequestState state;
+    private Status state;
 
     @NotNull(message = "Start date is required")
     private Date start;
@@ -37,11 +35,11 @@ public class RequestStageSaveDTO {
     @NotNull(message = "End date is required")
     private Date end;
 
-    public RequestStage toRequestStage() {
-        return RequestStage.builder()
+    public Task toTask() {
+        return Task.builder()
                 .description(description)
                 .user(user)
-                .request(request)
+                .project(project)
                 .state(state)
                 .start(start)
                 .end(end)
