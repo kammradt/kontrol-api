@@ -30,6 +30,13 @@ public class RequestStage implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date realizationDate;
 
+    @Column(nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date start;
+
+    @Column(nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date end;
 
     @Getter(onMethod = @__({@JsonIgnore}))
     @Setter(onMethod = @__({@JsonProperty}))

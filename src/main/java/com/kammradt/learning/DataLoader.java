@@ -54,6 +54,8 @@ public class DataLoader implements ApplicationRunner {
                 .user(savedVini)
                 .request(savedMacbook)
                 .state(RequestState.OPEN)
+                .start(new Date())
+                .end(new Date(new Date().getTime() + 1000 * 60 * 60 * 10))
                 .build()
                 .toRequestStage()
         );
@@ -62,6 +64,8 @@ public class DataLoader implements ApplicationRunner {
                 .user(savedVini)
                 .request(savedMacbook)
                 .state(RequestState.IN_PROGRESS)
+                .start(new Date())
+                .end(new Date(new Date().getTime() + 1000 * 60 * 60 * 10))
                 .build()
                 .toRequestStage()
         );
@@ -70,6 +74,8 @@ public class DataLoader implements ApplicationRunner {
                 .user(savedVini)
                 .request(savedMacbook)
                 .state(RequestState.CLOSED)
+                .start(new Date())
+                .end(new Date(new Date().getTime() + 1000 * 60 * 60 * 10))
                 .build()
                 .toRequestStage()
         );
