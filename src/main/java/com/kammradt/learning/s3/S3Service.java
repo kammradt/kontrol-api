@@ -4,7 +4,7 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
-import com.kammradt.learning.file.dtos.RequestFileDTO;
+import com.kammradt.learning.file.dtos.FileDto;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,7 +27,7 @@ public class S3Service {
         this.region = awsRegion;
     }
 
-    public List<RequestFileDTO> uploadMultipleFiles(List<MultipartFile> files) {
+    public List<FileDto> uploadMultipleFiles(List<MultipartFile> files) {
         return files
                 .stream()
                 .map(this::uploadFileToS3)
@@ -35,7 +35,7 @@ public class S3Service {
     }
 
     @SneakyThrows
-    private RequestFileDTO uploadFileToS3(MultipartFile file) {
+    private FileDto uploadFileToS3(MultipartFile file) {
         String originalFilename = file.getOriginalFilename();
         String s3FileName = generateUniqueFileName(file.getOriginalFilename());
 
@@ -47,7 +47,7 @@ public class S3Service {
         s3.putObject(request);
 
         String location = getFileLocacation(s3FileName);
-        return new RequestFileDTO(originalFilename, s3FileName, location);
+        return new FileDto(originalFilename, s3FileName, location);
     }
 
     private String getFileLocacation(String filename) {

@@ -1,6 +1,6 @@
 package com.kammradt.learning.project.dtos;
 
-import com.kammradt.learning.file.entities.RequestFile;
+import com.kammradt.learning.file.entities.File;
 import com.kammradt.learning.project.entities.Project;
 import com.kammradt.learning.task.entities.Status;
 import com.kammradt.learning.task.entities.Task;
@@ -15,32 +15,32 @@ import java.util.List;
 
 @Builder
 @Data
-public class RequestResponse implements Serializable {
+public class ProjectResponse implements Serializable {
 
     private Long id;
-    private String subject;
+    private String title;
     private String description;
     private Date creationDate;
     private User user;
-    private Status state;
+    private Status status;
     private Date start;
     private Date end;
-    private List<Task> stages;
-    private List<RequestFile> files;
+    private List<Task> tasks;
+    private List<File> files;
     private boolean willBeDelayed;
     private Float completionPercentage;
 
-    public static RequestResponse build(Project project) {
-        return RequestResponse.builder()
+    public static ProjectResponse build(Project project) {
+        return ProjectResponse.builder()
                 .id(project.getId())
-                .subject(project.getSubject())
+                .title(project.getTitle())
                 .description(project.getDescription())
                 .creationDate(project.getCreationDate())
                 .user(project.getUser())
-                .state(project.getState())
+                .status(project.getStatus())
                 .start(project.getStart())
                 .end(project.getEnd())
-                .stages(project.getStages())
+                .tasks(project.getTasks())
                 .files(project.getFiles())
                 .willBeDelayed(willBeDelayed(project))
                 .completionPercentage(formatPercentage(project))
@@ -48,13 +48,13 @@ public class RequestResponse implements Serializable {
     }
 
     private static boolean willBeDelayed(Project project) {
-        return project.getStages().stream().anyMatch(r -> r.getEnd().after(project.getEnd()));
+        return project.getTasks().stream().anyMatch(r -> r.getEnd().after(project.getEnd()));
     }
 
     private static Float formatPercentage(Project project) {
         DecimalFormat df2 = new DecimalFormat("#.##");
-        Float numberOfDone = (float) Math.toIntExact(project.getStages().stream().filter(r -> r.getState().equals(Status.CLOSED)).count());
-        Float numberOfStages = (float) project.getStages().size();
+        Float numberOfDone = (float) Math.toIntExact(project.getTasks().stream().filter(r -> r.getStatus().equals(Status.CLOSED)).count());
+        Float numberOfStages = (float) project.getTasks().size();
         Float percent = ((numberOfDone / numberOfStages) * 100);
         df2.format(percent);
         return percent;

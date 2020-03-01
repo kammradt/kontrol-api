@@ -1,6 +1,6 @@
 package com.kammradt.learning.file;
 
-import com.kammradt.learning.file.entities.RequestFile;
+import com.kammradt.learning.file.entities.File;
 import com.kammradt.learning.s3.S3Service;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -11,13 +11,13 @@ import javax.persistence.PreRemove;
 @Component
 @NoArgsConstructor
 @AllArgsConstructor
-public class RequestFileListener {
+public class FileListener {
 
     S3Service s3Service;
 
     @PreRemove
-    void removing(RequestFile requestFile) {
-        s3Service.delete(requestFile.getS3Name());
+    void removing(File file) {
+        s3Service.delete(file.getS3Name());
     }
 
 }

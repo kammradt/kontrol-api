@@ -2,10 +2,10 @@ package com.kammradt.learning.project;
 
 import com.kammradt.learning.commom.PageResponse;
 import com.kammradt.learning.commom.dtos.ParamsDTO;
-import com.kammradt.learning.file.RequestFileService;
-import com.kammradt.learning.file.entities.RequestFile;
-import com.kammradt.learning.project.dtos.RequestSaveDTO;
-import com.kammradt.learning.project.dtos.RequestUpdateDTO;
+import com.kammradt.learning.file.FileService;
+import com.kammradt.learning.file.entities.File;
+import com.kammradt.learning.project.dtos.ProjectSaveDTO;
+import com.kammradt.learning.project.dtos.ProjectUpdateDTO;
 import com.kammradt.learning.project.entities.Project;
 import com.kammradt.learning.task.TaskService;
 import com.kammradt.learning.task.entities.Task;
@@ -23,33 +23,33 @@ import java.util.Map;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping(value = "requests")
+@RequestMapping(value = "projects")
 public class ProjectResource {
 
     private ProjectService projectService;
     private TaskService taskService;
-    private RequestFileService requestFileService;
+    private FileService fileService;
 
     @Secured("ROLE_REGULAR")
     @PreAuthorize("@resourceAccessManager.isOwnUser(#requestDTO.user.id)")
     @PostMapping
-    public ResponseEntity<Project> save(@RequestBody @Valid RequestSaveDTO requestDTO) {
+    public ResponseEntity<Project> save(@RequestBody @Valid ProjectSaveDTO requestDTO) {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(projectService.save(requestDTO.toRequest()));
+                .body(projectService.save(requestDTO.toProject()));
     }
 
     @Secured("ROLE_REGULAR")
-    @PreAuthorize("@resourceAccessManager.isRequestOwner(#id)")
+    @PreAuthorize("@resourceAccessManager.isProjectOwner(#id)")
     @PutMapping("/{id}")
-    public ResponseEntity<Project> update(@PathVariable Long id, @RequestBody @Valid RequestUpdateDTO requestDTO) {
+    public ResponseEntity<Project> update(@PathVariable Long id, @RequestBody @Valid ProjectUpdateDTO requestDTO) {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(projectService.update(id, requestDTO.toRequest()));
+                .body(projectService.update(id, requestDTO.toProject()));
     }
 
     @Secured("ROLE_REGULAR")
-    @PreAuthorize("@resourceAccessManager.isRequestOwner(#id)")
+    @PreAuthorize("@resourceAccessManager.isProjectOwner(#id)")
     @GetMapping("/{id}")
     public ResponseEntity<Project> findById(@PathVariable Long id) {
         return ResponseEntity
@@ -65,10 +65,8 @@ public class ProjectResource {
                 .body(projectService.findAll());
     }
 
-    // findAllByUserId will be in userResource
-
     @Secured("ROLE_REGULAR")
-    @PreAuthorize("@resourceAccessManager.isRequestOwner(#id)")
+    @PreAuthorize("@resourceAccessManager.isProjectOwner(#id)")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteById(@PathVariable long id) {
         projectService.deleteById(id);
@@ -76,47 +74,47 @@ public class ProjectResource {
     }
 
     @Secured("ROLE_REGULAR")
-    @PreAuthorize("@resourceAccessManager.isRequestOwner(#id)")
-    @GetMapping("/{id}/request-stages")
-    public ResponseEntity<List<Task>> findAllRequestStagesByRequestId(@PathVariable Long id) {
+    @PreAuthorize("@resourceAccessManager.isProjectOwner(#id)")
+    @GetMapping("/{id}/tasks")
+    public ResponseEntity<List<Task>> findAllTasksByProjectId(@PathVariable Long id) {
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(taskService.findAllByRequestId(id));
+                .body(taskService.findAllByProjectId(id));
     }
 
     @Secured("ROLE_REGULAR")
-    @PreAuthorize("@resourceAccessManager.isRequestOwner(#id)")
+    @PreAuthorize("@resourceAccessManager.isProjectOwner(#id)")
     @GetMapping("/{id}/files")
-    public ResponseEntity<PageResponse<RequestFile>> findAllFilesByRequestId(
+    public ResponseEntity<PageResponse<File>> findAllFilesByProjectId(
             @PathVariable Long id,
             @RequestParam Map<String, String> params
     ) {
         ParamsDTO paramsDTO = new ParamsDTO(params);
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(requestFileService.findAllByRequestId(id, paramsDTO));
+                .body(fileService.findAllByProjectId(id, paramsDTO));
     }
 
     @Secured("ROLE_REGULAR")
-    @PreAuthorize("@resourceAccessManager.isRequestOwner(#requestId)")
-    @DeleteMapping("/{requestId}/files/{fileId}")
-    public ResponseEntity<?> deleteRequestFileById(
-            @PathVariable Long requestId,
+    @PreAuthorize("@resourceAccessManager.isProjectOwner(#projectId)")
+    @DeleteMapping("/{projectId}/files/{fileId}")
+    public ResponseEntity<?> deleteFileById(
+            @PathVariable Long projectId,
             @PathVariable Long fileId
     ) {
-        requestFileService.deleteRequestFileById(fileId);
+        fileService.deleteFileById(fileId);
         return ResponseEntity.ok().build();
     }
 
     @Secured("ROLE_REGULAR")
-    @PreAuthorize("@resourceAccessManager.isRequestOwner(#id)")
+    @PreAuthorize("@resourceAccessManager.isProjectOwner(#id)")
     @PostMapping("/{id}/files")
-    public ResponseEntity<List<RequestFile>> uploadFilesToRequest(
+    public ResponseEntity<List<File>> uploadFilesToProject(
             @PathVariable Long id,
             @RequestBody List<MultipartFile> files
     ) {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(requestFileService.uploadFiles(id, files));
+                .body(fileService.uploadFiles(id, files));
     }
 }

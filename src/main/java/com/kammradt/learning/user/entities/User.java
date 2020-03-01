@@ -52,7 +52,7 @@ public class User implements Serializable {
     @Getter(onMethod = @__({@JsonIgnore}))
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    private List<Task> stages = new ArrayList<>(); // TODO change to tasks
+    private List<Task> tasks = new ArrayList<>();
 
 
 }

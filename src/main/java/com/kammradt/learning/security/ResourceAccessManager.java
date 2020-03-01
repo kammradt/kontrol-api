@@ -29,14 +29,14 @@ public class ResourceAccessManager {
         return user.getId().equals(userId);
     }
 
-    public boolean isRequestOwner(Long resourceId) {
+    public boolean isProjectOwner(Long resourceId) {
         User user = getCurrentUser();
         Project project = projectService.findById(resourceId);
 
         return user.getId().equals(project.getUser().getId());
     }
 
-    public boolean isRequestStageOwner(Long resourceId) {
+    public boolean isTaskOwner(Long resourceId) {
         User user = getCurrentUser();
         Task task = taskService.findById(resourceId);
 

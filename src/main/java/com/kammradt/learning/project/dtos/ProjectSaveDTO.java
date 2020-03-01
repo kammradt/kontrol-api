@@ -1,14 +1,11 @@
 package com.kammradt.learning.project.dtos;
 
-import com.kammradt.learning.file.entities.RequestFile;
+import com.kammradt.learning.file.entities.File;
 import com.kammradt.learning.project.entities.Project;
 import com.kammradt.learning.task.entities.Status;
 import com.kammradt.learning.task.entities.Task;
 import com.kammradt.learning.user.entities.User;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.validation.constraints.Future;
 import javax.validation.constraints.NotBlank;
@@ -21,13 +18,12 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class RequestUpdateDTO {
-    @NotBlank(message = "Subject is required")
-    private String subject;
-    private String description;
+@Builder
+public class ProjectSaveDTO {
 
-    @NotNull(message = "State is required")
-    private Status state;
+    @NotBlank(message = "Subject is required")
+    private String title;
+    private String description;
 
     @NotNull(message = "User is required")
     private User user;
@@ -38,19 +34,21 @@ public class RequestUpdateDTO {
     @Future
     private Date end;
 
-    private List<Task> stages = new ArrayList<>();
-    private List<RequestFile> files = new ArrayList<>();
+    private List<Task> tasks = new ArrayList<>();
+    private List<File> files = new ArrayList<>();
 
-    public Project toRequest() {
+    public Project toProject() {
         return Project.builder()
-                .subject(subject)
+                .title(title)
                 .description(description)
-                .state(state)
                 .user(user)
+                .tasks(tasks)
+                .files(files)
                 .start(start)
                 .end(end)
-                .stages(stages)
-                .files(files)
+                .status(Status.OPEN)
+                .creationDate(new Date())
                 .build();
     }
+
 }
