@@ -9,6 +9,8 @@
 
 ## What :question:
 
+> I needed to turn off the server due costs :( 
+
 You can access the raw API [here](http://spring-course-env.us-east-1.elasticbeanstalk.com/)   
 (The documentation is missing and will be made with swagger in the future)
 
